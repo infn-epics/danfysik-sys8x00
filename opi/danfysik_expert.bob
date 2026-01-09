@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2026-01-09 12:00:00 by user-->
+<display version="2.0.0">
+  <name>Danfysik Expert Panel</name>
+  <macros>
+    <DEVICE>PS:DANFYSIK:01</DEVICE>
+  </macros>
+  <width>1000</width>
+  <height>700</height>
+  <background_color>
+    <color name="Display_Background" red="255" green="255" blue="255">
+    </color>
+  </background_color>
+  
+  <!-- Title -->
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <text>Danfysik SYS8X00 - Expert/Debug Panel</text>
+    <x>20</x>
+    <y>10</y>
+    <width>400</width>
+    <height>30</height>
+    <font>
+      <font name="Header 1" family="Liberation Sans" style="BOLD" size="18.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="STOP" red="255" green="0" blue="0">
+      </color>
+    </foreground_color>
+  </widget>
+  
+  <!-- Warning -->
+  <widget type="label" version="2.0.0">
+    <name>Warning</name>
+    <text>⚠️ EXPERT MODE - Use with caution! Direct hardware control.</text>
+    <x>20</x>
+    <y>45</y>
+    <width>600</width>
+    <height>20</height>
+    <font>
+      <font name="Default Bold" family="Liberation Sans" style="BOLD" size="12.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="MAJOR" red="255" green="0" blue="0">
+      </color>
+    </foreground_color>
+  </widget>
+  
+  <!-- Direct Hardware Control Section -->
+  <widget type="rectangle" version="2.0.0">
+    <name>HardwareFrame</name>
+    <x>20</x>
+    <y>80</y>
+    <width>960</width>
+    <height>150</height>
+    <line_color>
+      <color name="MAJOR" red="255" green="0" blue="0">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Write_Background" red="255" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>HardwareTitle</name>
+    <text>Direct Hardware Control</text>
+    <x>30</x>
+    <y>90</y>
+    <width>200</width>
+    <height>20</height>
+    <font>
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+  </widget>
+  
+  <!-- Direct Current Control -->
+  <widget type="label" version="2.0.0">
+    <name>DirectCurrentLabel</name>
+    <text>Direct Current (DAC):</text>
+    <x>30</x>
+    <y>120</y>
+    <width>130</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textentry" version="3.0.0">
+    <name>DirectCurrent</name>
+    <pv_name>$(DEVICE):I_SP</pv_name>
+    <x>160</x>
+    <y>120</y>
+    <width>120</width>
+    <height>20</height>
+    <precision>3</precision>
+    <background_color>
+      <color name="Write_Background" red="255" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>DirectCurrentSPRB</name>
+    <text>SP RB:</text>
+    <x>290</x>
+    <y>120</y>
+    <width>40</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>DirectCurrentReadback</name>
+    <pv_name>$(DEVICE):I_SP_RB</pv_name>
+    <x>330</x>
+    <y>120</y>
+    <width>100</width>
+    <height>20</height>
+    <precision>3</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <!-- Address Control -->
+  <widget type="label" version="2.0.0">
+    <name>AddressSetLabel</name>
+    <text>Set Address:</text>
+    <x>450</x>
+    <y>120</y>
+    <width>80</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textentry" version="3.0.0">
+    <name>AddressSet</name>
+    <pv_name>$(DEVICE):ADDR_SP</pv_name>
+    <x>530</x>
+    <y>120</y>
+    <width>60</width>
+    <height>20</height>
+    <background_color>
+      <color name="Write_Background" red="255" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <!-- Communication Test -->
+  <widget type="action_button" version="3.0.0">
+    <name>InitRemoteButton</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(DEVICE):INIT_REMOTE</pv_name>
+        <value>1</value>
+        <description>Initialize Remote Control</description>
+      </action>
+    </actions>
+    <text>INIT REMOTE</text>
+    <x>620</x>
+    <y>120</y>
+    <width>100</width>
+    <height>25</height>
+    <background_color>
+      <color name="Button_Background" red="210" green="210" blue="210">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="action_button" version="3.0.0">
+    <name>ErrorTextButton</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(DEVICE):ERROR_TEXT</pv_name>
+        <value>1</value>
+        <description>Enable Text Error Messages</description>
+      </action>
+    </actions>
+    <text>ERROR TEXT</text>
+    <x>730</x>
+    <y>120</y>
+    <width>100</width>
+    <height>25</height>
+    <background_color>
+      <color name="Button_Background" red="210" green="210" blue="210">
+      </color>
+    </background_color>
+  </widget>
+  
+  <!-- Advanced Ramping -->
+  <widget type="label" version="2.0.0">
+    <name>AdvRampLabel</name>
+    <text>Advanced Ramping:</text>
+    <x>30</x>
+    <y>150</y>
+    <width>120</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>RampEndLabel2</name>
+    <text>End:</text>
+    <x>150</x>
+    <y>150</y>
+    <width>30</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textentry" version="3.0.0">
+    <name>RampEndExpert</name>
+    <pv_name>$(DEVICE):RAMP_END_SP</pv_name>
+    <x>180</x>
+    <y>150</y>
+    <width>100</width>
+    <height>20</width>
+    <precision>3</precision>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>RampRateLabel2</name>
+    <text>Rate:</text>
+    <x>290</x>
+    <y>150</y>
+    <width>40</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textentry" version="3.0.0">
+    <name>RampRateExpert</name>
+    <pv_name>$(DEVICE):RAMP_RATE_SP</pv_name>
+    <x>330</x>
+    <y>150</y>
+    <width>100</width>
+    <height>20</width>
+    <precision>2</precision>
+  </widget>
+  
+  <!-- Sequence Trigger -->
+  <widget type="label" version="2.0.0">
+    <name>SeqTrigLabel</name>
+    <text>Seq Trigger:</text>
+    <x>450</x>
+    <y>150</y>
+    <width>80</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textentry" version="3.0.0">
+    <name>SeqTrigger</name>
+    <pv_name>$(DEVICE):SEQ_TRIGGER</pv_name>
+    <x>530</x>
+    <y>150</y>
+    <width>60</width>
+    <height>20</height>
+  </widget>
+  
+  <!-- Raw ADC Values Section -->
+  <widget type="rectangle" version="2.0.0">
+    <name>AdcFrame</name>
+    <x>20</x>
+    <y>250</y>
+    <width>480</width>
+    <height>200</width>
+    <line_color>
+      <color name="Grid" red="90" green="90" blue="90">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>AdcTitle</name>
+    <text>Raw ADC Values</text>
+    <x>30</x>
+    <y>260</y>
+    <width>150</width>
+    <height>20</height>
+    <font>
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+  </widget>
+  
+  <!-- ADC Channel readings in table format -->
+  <widget type="label" version="2.0.0">
+    <name>Adc0Label</name>
+    <text>CH0 (I out %):</text>
+    <x>30</x>
+    <y>290</y>
+    <width>100</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc0Value</name>
+    <pv_name>$(DEVICE):I_RB</pv_name>
+    <x>130</x>
+    <y>290</y>
+    <width>80</width>
+    <height>20</height>
+    <precision>3</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Adc1Label</name>
+    <text>CH1 (Tesla):</text>
+    <x>250</x>
+    <y>290</y>
+    <width>80</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc1Value</name>
+    <pv_name>$(DEVICE):TESLA_RB</pv_name>
+    <x>330</x>
+    <y>290</y>
+    <width>80</width>
+    <height>20</height>
+    <precision>2</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Adc2Label</name>
+    <text>CH2 (V out %):</text>
+    <x>30</x>
+    <y>315</y>
+    <width>100</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc2Value</name>
+    <pv_name>$(DEVICE):V_RB</pv_name>
+    <x>130</x>
+    <y>315</y>
+    <width>80</width>
+    <height>20</width>
+    <precision>2</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Adc3Label</name>
+    <text>CH3 (+15V):</text>
+    <x>250</x>
+    <y>315</y>
+    <width>80</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc3Value</name>
+    <pv_name>$(DEVICE):P15V_RB</pv_name>
+    <x>330</x>
+    <y>315</y>
+    <width>80</width>
+    <height>20</width>
+    <precision>1</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Adc4Label</name>
+    <text>CH4 (-15V):</text>
+    <x>30</x>
+    <y>340</y>
+    <width>100</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc4Value</name>
+    <pv_name>$(DEVICE):M15V_RB</pv_name>
+    <x>130</x>
+    <y>340</y>
+    <width>80</width>
+    <height>20</width>
+    <precision>1</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Adc5Label</name>
+    <text>CH5 (+5V):</text>
+    <x>250</x>
+    <y>340</y>
+    <width>80</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc5Value</name>
+    <pv_name>$(DEVICE):P5V_RB</pv_name>
+    <x>330</x>
+    <y>340</y>
+    <width>80</width>
+    <height>20</height>
+    <precision>1</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Adc6Label</name>
+    <text>CH6 (ΔTemp):</text>
+    <x>30</x>
+    <y>365</y>
+    <width>100</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc6Value</name>
+    <pv_name>$(DEVICE):TEMP_DELTA_RB</pv_name>
+    <x>130</x>
+    <y>365</y>
+    <width>80</width>
+    <height>20</height>
+    <precision>1</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Adc7Label</name>
+    <text>CH7 (Vce):</text>
+    <x>250</x>
+    <y>365</y>
+    <width>80</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc7Value</name>
+    <pv_name>$(DEVICE):VCE_RB</pv_name>
+    <x>330</x>
+    <y>365</y>
+    <width>80</width>
+    <height>20</height>
+    <precision>1</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Adc8Label</name>
+    <text>CH8 (HiRes I):</text>
+    <x>30</x>
+    <y>390</y>
+    <width>100</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>Adc8Value</name>
+    <pv_name>$(DEVICE):I_HIRES_RB</pv_name>
+    <x>130</x>
+    <y>390</y>
+    <width>80</width>
+    <height>20</height>
+    <precision>5</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <!-- Status Decoding Section -->
+  <widget type="rectangle" version="2.0.0">
+    <name>StatusDecodeFrame</name>
+    <x>520</x>
+    <y>250</y>
+    <width>460</width>
+    <height>200</width>
+    <line_color>
+      <color name="Grid" red="90" green="90" blue="90">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>StatusDecodeTitle</name>
+    <text>Status String Decoding</text>
+    <x>530</x>
+    <y>260</y>
+    <width>180</width>
+    <height>20</height>
+    <font>
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>StatusStringLabel2</name>
+    <text>Raw String:</text>
+    <x>530</x>
+    <y>290</y>
+    <width>80</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>StatusString2</name>
+    <pv_name>$(DEVICE):STATUS</pv_name>
+    <x>610</x>
+    <y>290</y>
+    <width>360</width>
+    <height>20</width>
+    <background_color>
+      <color name="Read_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <font>
+      <font name="Default" family="Liberation Mono" style="REGULAR" size="10.0">
+      </font>
+    </font>
+  </widget>
+  
+  <!-- Individual status bits -->
+  <widget type="label" version="2.0.0">
+    <name>StatusBitsLabel</name>
+    <text>Status Bits:</text>
+    <x>530</x>
+    <y>320</y>
+    <width>80</width>
+    <height>20</width>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Bit0Label</name>
+    <text>Pwr:</text>
+    <x>530</x>
+    <y>345</y>
+    <width>30</width>
+    <height>15</height>
+  </widget>
+  
+  <widget type="led" version="2.0.0">
+    <name>Bit0Led</name>
+    <pv_name>$(DEVICE):MAIN_PWR_ON</pv_name>
+    <x>560</x>
+    <y>345</y>
+    <width>15</width>
+    <height>15</height>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Bit1Label</name>
+    <text>Pol+:</text>
+    <x>580</x>
+    <y>345</y>
+    <width>30</width>
+    <height>15</height>
+  </widget>
+  
+  <widget type="led" version="2.0.0">
+    <name>Bit1Led</name>
+    <pv_name>$(DEVICE):POL_NORMAL</pv_name>
+    <x>610</x>
+    <y>345</y>
+    <width>15</width>
+    <height>15</height>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>Bit2Label</name>
+    <text>Pol-:</text>
+    <x>630</x>
+    <y>345</y>
+    <width>30</width>
+    <height>15</height>
+  </widget>
+  
+  <widget type="led" version="2.0.0">
+    <name>Bit2Led</name>
+    <pv_name>$(DEVICE):POL_REVERSED</pv_name>
+    <x>660</x>
+    <y>345</y>
+    <width>15</width>
+    <height>15</width>
+  </widget>
+  
+  <!-- UNIMAG Debug Section -->
+  <widget type="rectangle" version="2.0.0">
+    <name>UnimagDebugFrame</name>
+    <x>20</x>
+    <y>470</y>
+    <width>960</width>
+    <height>150</width>
+    <line_color>
+      <color name="Grid" red="90" green="90" blue="90">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Read_Background" red="240" green="255" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>UnimagDebugTitle</name>
+    <text>UNIMAG Debug Information</text>
+    <x>30</x>
+    <y>480</y>
+    <width>200</width>
+    <height>20</width>
+    <font>
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+  </widget>
+  
+  <!-- UNIMAG internal states -->
+  <widget type="label" version="2.0.0">
+    <name>UnimagStateLabel</name>
+    <text>State:</text>
+    <x>30</x>
+    <y>510</y>
+    <width>50</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>UnimagState</name>
+    <pv_name>$(DEVICE):UNIMAG:STATE_RB</pv_name>
+    <x>80</x>
+    <y>510</y>
+    <width>100</width>
+    <height>20</width>
+    <background_color>
+      <color name="Read_Background" red="240" green="255" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>UnimagSeqStepLabel</name>
+    <text>Seq Step:</text>
+    <x>200</x>
+    <y>510</y>
+    <width>70</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>UnimagSeqStep</name>
+    <pv_name>$(DEVICE):UNIMAG:SEQ_STEP</pv_name>
+    <x>270</x>
+    <y>510</y>
+    <width>100</width>
+    <height>20</width>
+    <background_color>
+      <color name="Read_Background" red="240" green="255" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>UnimagTargetPolLabel</name>
+    <text>Target Pol:</text>
+    <x>390</x>
+    <y>510</y>
+    <width>70</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>UnimagTargetPol</name>
+    <pv_name>$(DEVICE):UNIMAG:TARGET_POL</pv_name>
+    <x>460</x>
+    <y>510</y>
+    <width>80</width>
+    <height>20</width>
+    <background_color>
+      <color name="Read_Background" red="240" green="255" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="label" version="2.0.0">
+    <name>UnimagTargetCurrLabel</name>
+    <text>Target I:</text>
+    <x>560</x>
+    <y>510</y>
+    <width>60</width>
+    <height>20</height>
+  </widget>
+  
+  <widget type="textupdate" version="2.0.0">
+    <name>UnimagTargetCurr</name>
+    <pv_name>$(DEVICE):UNIMAG:TARGET_ABS_CURR</pv_name>
+    <x>620</x>
+    <y>510</y>
+    <width>80</width>
+    <height>20</width>
+    <precision>3</precision>
+    <background_color>
+      <color name="Read_Background" red="240" green="255" blue="240">
+      </color>
+    </background_color>
+  </widget>
+  
+  <!-- Navigation and Control Buttons -->
+  <widget type="action_button" version="3.0.0">
+    <name>MainPanelButton2</name>
+    <actions>
+      <action type="open_display">
+        <file>danfysik_main.bob</file>
+        <macros>
+          <DEVICE>$(DEVICE)</DEVICE>
+        </macros>
+        <target>tab</target>
+        <description>Open Main Control Panel</description>
+      </action>
+    </actions>
+    <text>Main Panel</text>
+    <x>20</x>
+    <y>640</y>
+    <width>120</width>
+    <height>30</height>
+    <background_color>
+      <color name="Button_Background" red="210" green="210" blue="210">
+      </color>
+    </background_color>
+  </widget>
+  
+  <widget type="action_button" version="3.0.0">
+    <name>UnimagPanelButton2</name>
+    <actions>
+      <action type="open_display">
+        <file>danfysik_unimag.bob</file>
+        <macros>
+          <DEVICE>$(DEVICE)</DEVICE>
+        </macros>
+        <target>tab</target>
+        <description>Open UNIMAG Interface</description>
+      </action>
+    </actions>
+    <text>UNIMAG Panel</text>
+    <x>150</x>
+    <y>640</y>
+    <width>120</width>
+    <height>30</height>
+    <background_color>
+      <color name="Button_Background" red="210" green="210" blue="210">
+      </color>
+    </background_color>
+  </widget>
+  
+</display>

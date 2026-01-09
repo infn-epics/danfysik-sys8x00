@@ -1,0 +1,154 @@
+# Example MEDM screen for Danfysik SYS8X00 Power Supply
+# Save as: danfysik_main.adl
+#
+# This is a text representation of what a MEDM screen might contain.
+# Actual MEDM files use binary format or XML-like syntax.
+# Use MEDM editor to create the actual .adl file.
+
+#-------------------------------------------------------
+# Main Control Screen Layout
+#-------------------------------------------------------
+
+Screen Title: "Danfysik SYS8X00 Power Supply Control"
+Screen Size: 800x600
+
+#-------------------------------------------------------
+# Device Information Section (Top)
+#-------------------------------------------------------
+Static Text: "Device: $(DEVICE)"
+Text Update: "$(DEVICE):INFO"          # Power supply info
+Text Update: "$(DEVICE):VERSION"       # Firmware version  
+Text Update: "$(DEVICE):CTRL_MODE"     # Control mode (REM/LOC)
+Text Update: "$(DEVICE):CTRL_STATE"    # Control state
+
+#-------------------------------------------------------  
+# Status Section
+#-------------------------------------------------------
+LED Indicator: "$(DEVICE):CONNECTED"    # Green=Connected, Red=Disconnected
+LED Indicator: "$(DEVICE):MAIN_PWR_ON"  # Green=On, Red=Off
+Text Update: "$(DEVICE):STATUS"          # Full status string
+
+#-------------------------------------------------------
+# Main Control Section  
+#-------------------------------------------------------
+Message Button: "$(DEVICE):POWER_SP"    # Power On/Off
+  - Text: "Power ON" / "Power OFF"
+  - Colors: Green/Red
+
+Message Button: "$(DEVICE):RESET"       # Reset Interlocks
+  - Text: "RESET"
+  - Color: Yellow
+
+Message Button: "$(DEVICE):GOFF"        # Global Off  
+  - Text: "GLOBAL OFF"
+  - Color: Red
+
+Choice Button: "$(DEVICE):REMOTE"       # Remote/Local
+  - Options: "Local" / "Remote"
+
+#-------------------------------------------------------
+# Current Control Section
+#-------------------------------------------------------  
+Text Entry: "$(DEVICE):I_SP"           # Current setpoint input
+  - Label: "Current Setpoint (A):"
+  - Limits: 0 to $(IMAX)
+  - Precision: 3
+
+Text Update: "$(DEVICE):I_SP_RB"       # Current setpoint readback
+  - Label: "Setpoint RB (A):"
+  - Precision: 3
+
+Text Update: "$(DEVICE):I_RB"          # Actual current
+  - Label: "Current (A):" 
+  - Precision: 3
+  - Color: Based on alarm status
+
+Bar Meter: "$(DEVICE):I_RB"           # Current bar graph
+  - Range: 0 to $(IMAX)
+  - Colors: Green/Yellow/Red based on limits
+
+#-------------------------------------------------------
+# Voltage Monitoring
+#-------------------------------------------------------
+Text Update: "$(DEVICE):V_RB"          # Output voltage
+  - Label: "Voltage (V):"
+  - Precision: 2
+
+#-------------------------------------------------------
+# Ramping Control Section  
+#-------------------------------------------------------
+Text Entry: "$(DEVICE):RAMP_RATE_SP"   # Ramp rate
+  - Label: "Ramp Rate (A/s):"
+  - Limits: 0.1 to 100
+  - Precision: 2
+
+Text Entry: "$(DEVICE):RAMP_END_SP"    # Ramp end point
+  - Label: "Ramp End (A):"
+  - Limits: 0 to $(IMAX)  
+  - Precision: 3
+
+Text Update: "$(DEVICE):RAMP_RATE_RB"  # Ramp rate readback
+Text Update: "$(DEVICE):RAMP_END_RB"   # Ramp end readback
+
+#-------------------------------------------------------
+# Polarity Control (if equipped)
+#-------------------------------------------------------
+Choice Button: "$(DEVICE):POL_SP"      # Polarity select
+  - Options: "Positive" / "Negative"
+
+Text Update: "$(DEVICE):POL_RB"        # Polarity readback
+  - Label: "Polarity:"
+
+#-------------------------------------------------------
+# Internal Monitoring Section
+#-------------------------------------------------------
+Text Update: "$(DEVICE):P15V_RB"       # +15V supply
+  - Label: "+15V:"
+  - Units: "V"
+
+Text Update: "$(DEVICE):M15V_RB"       # -15V supply  
+  - Label: "-15V:"
+  - Units: "V"
+
+Text Update: "$(DEVICE):P5V_RB"        # +5V supply
+  - Label: "+5V:"
+  - Units: "V"
+
+Text Update: "$(DEVICE):TEMP_DELTA_RB" # Temperature
+  - Label: "ΔTemp:"
+  - Units: "°C"
+
+Text Update: "$(DEVICE):VCE_RB"        # Transistor Vce
+  - Label: "Vce:"
+  - Units: "V"
+
+#-------------------------------------------------------
+# Historical Plot (optional)
+#-------------------------------------------------------
+Strip Chart: 
+  - PV 1: "$(DEVICE):I_RB"    (Current - Blue)
+  - PV 2: "$(DEVICE):V_RB"    (Voltage - Red)
+  - PV 3: "$(DEVICE):I_SP"    (Setpoint - Green)
+  - Time Range: 1 hour
+  - Update Rate: 1 second
+
+#-------------------------------------------------------
+# Alarm Summary (optional)
+#-------------------------------------------------------
+Text Update: "$(DEVICE):I_RB_ALARM.SEVR"  # Current alarm severity
+Text Update: "$(DEVICE):V_RB.SEVR"        # Voltage alarm severity
+
+#-------------------------------------------------------
+# Related Screens Buttons
+#-------------------------------------------------------
+Related Display Button: "Detailed Status"
+  - File: "danfysik_status.adl"  
+  - Macros: "DEVICE=$(DEVICE)"
+
+Related Display Button: "Expert Settings"
+  - File: "danfysik_expert.adl"
+  - Macros: "DEVICE=$(DEVICE)"
+
+Related Display Button: "Archive Viewer"
+  - File: "archive_viewer.adl"
+  - Macros: "DEVICE=$(DEVICE)"

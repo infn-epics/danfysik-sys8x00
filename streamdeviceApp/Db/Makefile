@@ -8,10 +8,13 @@ include $(TOP)/configure/CONFIG
 #DB_OPT = YES
 
 #----------------------------------------------------
-# Create and install (or just install)
-# databases, templates, substitutions like this
-DB += streamdevicesample.template
-DB += streamdevicesample.proto
+# Create and install (or just install)  
+
+# Danfysik SYS8X00 Power Supply files
+DB += danfysik.template
+DB += danfysik.proto
+DB += danfysik.substitutions
+DB += danfysik_unimag.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

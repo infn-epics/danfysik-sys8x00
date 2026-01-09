@@ -1,0 +1,638 @@
+Danfysik System SYS8X00 Command Reference
+
+1. Communication Interface
+
+The control board uses standard serial interfaces RS-232C and RS-422. Communication is performed by transmitting ASCII characters, terminated by CARRIAGE RETURN (CR). Responses from the power supply are terminated by LINE FEED (LF) and CARRIAGE RETURN (CR), though a recent update notes that answers are now followed by 'cr' alone. An error message includes a "?BELL" (ASCII 7). None of the serial lines use hardware control signals.
+
+Two data links are available:
+
+A REMOTE LINE, with either RS-232C or RS-422 communication (optically isolated).
+
+A local control panel line.
+
+The active communication line is referred to as the "line-in-command."
+
+2. Commands (Alphabetical Order)
+
+AD – Read ADC Channel
+
+Function: Reads a value from an ADC channel.
+
+Syntax: AD X (where X is 0-9)
+
+Response: ch sp val lf cr
+
+Details:
+
+Channel 0: Output current (I/In)*100
+
+Channel 1: Tesla T*100
+
+Channel 2: Output voltage (V/Vn)*100
+
+Channel 3: Internal +15V supply (V*10)
+
+Channel 4: Internal -15V supply (V*10)
+
+Channel 5: Internal +5V supply (V*10)
+
+Channel 6: Delta temperature (Deg.C*10) - includes sign (+/-)
+
+Channel 7: Transistor bank Vce (V)
+
+Channel 8: Optional Iout 16-bit (I/In)*100000
+
+Channel 9: Aux Iout (control panel) (I/In)*120
+
+Note: If a value is prefixed with 'E', it indicates the last value read during an error condition. Read the channel again to get the actual value once the error is cleared.
+
+ADR – Address (Read/Write)
+
+Function: Reads or sets the MPS address.
+
+Syntax (Read): ADR
+
+Syntax (Write): ADR XXX (Address: 00 to 63 decimal)
+
+Response (Read): address lf cr
+
+Details: Not valid in LALL mode. The first ADR command after LALL disables the LALL function. Writing an address selects that unit and deselects the previous one.
+
+ASW – Answer Mode
+
+Function: Switches the remote line into auto-answer mode for certain setup commands.
+
+Syntax: ASW
+
+Details: (Remote line only). Suppressed in LALL mode. Commands that generate an answer in this mode: WA, PO+/-, W1, W2, W3.
+
+BAUD – Set Baud Rate
+
+Function: Sets the baud rate on the remote line.
+
+Syntax: BAUD XXXXX
+
+Details: Valid rates: 19200, 9600, 4800, 2400, 1200, 600, 300, 150. An illegal setting will break communication.
+
+CMD – Command Line
+
+Function: Returns the current control mode.
+
+Syntax: CMD
+
+Response: REM (Remote) or LOC (Local).
+
+CMDSTATE – Command Line State
+
+Function: Returns a detailed current control state.
+
+Syntax: CMDSTATE
+
+Response: REMOTE, LOCAL, or LOCK.
+
+ERRC – Error in Code
+
+Function: Sets controller to respond with coded error messages.
+
+Syntax: ERRC
+
+Details: (Remote line only). For use with a host computer that can decode error codes.
+
+ERRT – Error in Text
+
+Function: Sets controller to respond with full-text error messages.
+
+Syntax: ERRT
+
+Details: (Remote line only). For use with simple terminals.
+
+F – Off
+
+Function: Switches the main power contactor OFF.
+
+Syntax: F
+
+Details: Clears interlocks if the interlock condition is removed.
+
+GOFF – Global Off
+
+Function: Switches off the main contactor after ensuring DAC output is at minimum.
+
+Syntax: GOFF
+
+LALL – Listen All
+
+Function: Puts all connected controllers into a pseudo-addressed mode.
+
+Syntax: LALL
+
+Details: (Remote line only). All controllers respond to setup commands (except N). No answers are given. Disabled by the first subsequent ADR command.
+
+LOC – Local Control
+
+Function: Switches the line-in-command to the local control panel.
+
+Syntax: LOC
+
+LOCK – Lock
+
+Function: Locks the line-in-command to the local line.
+
+Syntax: LOCK
+
+Details: (Remote line only). Used to prevent remote access during local service. Should only be used in emergencies.
+
+N – On
+
+Function: Switches the main power contactor ON (if no interlock errors are present).
+
+Syntax: N
+
+Details: Cannot be used in LALL mode. Usually requires a preceding F or RS command to clear latched errors.
+
+NASW – No Answer Mode
+
+Function: Cancels the auto-answer mode (ASW).
+
+Syntax: NASW
+
+Details: (Remote line only).
+
+NERR – No Error
+
+Function: Suppresses detailed error messages. Only "?BELL" is returned on error.
+
+Syntax: NERR
+
+Details: (Remote line only).
+
+PO – Polarity Read
+
+Function: Reads the present output polarity status.
+
+Syntax: PO
+
+Response: + (Normal), - (Reverse), N or O (Neutral/Off).
+
+PO+ / PO- – Polarity Change
+
+Function: Changes the output polarity (if the unit is equipped for polarity reversal).
+
+Syntax: PO+ or PO-
+
+PRINT – Print
+
+Function: Returns two lines of internal unit information (e.g., serial number, type).
+
+Syntax: PRINT
+
+Details: (Remote line only). Service command.
+
+RA – Read DAC Setting
+
+Function: Reads the register controlling the current setting DAC (16-bit or optional 18-bit).
+
+Syntax: RA
+
+Response: DDDDDD (6 digits)
+
+Details: Calculate output current: Io = In * (Y / 1,000,000), where Y is the read value.
+
+RAR – Read Actual Ramp End
+
+Function: Reads the DAC end value set for ramping.
+
+Syntax: RAR
+
+Response: RAR 025352 (6 digits with leading zeros)
+
+REM – Remote Control
+
+Function: Switches the line-in-command to the remote line.
+
+Syntax: REM
+
+RLOCK – Remote Lock
+
+Function: Locks the line-in-command to the remote line, inhibiting the control panel from switching to local.
+
+Syntax: RLOCK
+
+Details: (Remote line only). Can only be switched off by a new line-in-command from the remote line (REM or LOC).
+
+RR – Read Slew Rate
+
+Function: Reads the current ramp speed setting.
+
+Syntax: RR
+
+Response: RR 050 (3 digits, 0.1-10% per second, default 050=5%).
+
+RS – Reset
+
+Function: Resets (clears) all latched interlocks.
+
+Syntax: RS
+
+S1 – Status 1
+
+Function: Returns a 24-character status string of interlocks, polarity, and on/off status.
+
+Syntax: S1
+
+Response: String of '!' (error/non-normal) and '.' (normal) characters. Bit definitions are provided in the manual.
+
+SYN – Synchronize
+
+Function: Synchronizes/initializes the serial communication controller.
+
+Syntax: ASCII code 16 (Ctrl+V)
+
+Details: Similar to an IEEE-488 IFC. Send, wait 150 µs, then send a CR to re-initiate communication.
+
+TS – Trigger Sequence
+
+Function: Starts a programmed sequence from its first position.
+
+Syntax: TS stack (stack: 0-3)
+
+UNLOCK – Unlock
+
+Function: Releases a LOCK condition set by the local control panel.
+
+Syntax: UNLOCK
+
+Details: (Remote line only). Should only be used in emergency situations to regain remote control.
+
+VER – Version
+
+Function: Returns three lines of internal program information (version, copyright, date).
+
+Syntax: VER
+
+Details: (Remote line only). Service command.
+
+WA – Write DAC Setting
+
+Function: Writes a value to the register controlling the current setting DAC.
+
+Syntax: WA XXXXXX (6 digits)
+
+Details: Value interpretation is the inverse of the RA command.
+
+WAR – Write Actual Ramp End
+
+Function: Writes the DAC end value to be used by the ramp function.
+
+Syntax: WAR DACend (Value from 001000 to maximum current)
+
+Details: Use the MAX command to find the maximum allowed current.
+
+WR – Write Slew Rate
+
+Function: Sets the ramp speed.
+
+Syntax: WR rampspeed (Value 001 to 100, representing 0.1% to 10% of rated current per second).
+
+Details: Default initial setting is 050 (5%).
+
+?1 – Quick Read High-Definition ADC
+
+Function: Quick binary read of the high-definition current ADC (24-bit raw value).
+
+Syntax: ?1
+
+?2 – Quick Read Status (Binary)
+
+Function: Quick binary read of the status (32-bit). LSB of first byte corresponds to first bit of S1.
+
+Syntax: ?2
+
+?3 – Quick Read Combined (?1 + ?2)
+
+Function: Quick binary read combining status and high-def ADC (32-bit + 24-bit).
+
+Syntax: ?3
+
+?4 – Read ADC 100% Calibration Value
+
+Function: Reads the stored raw ADC value at 100% output calibration point (24-bit).
+
+Syntax: ?4
+
+Details: Used to calculate actual current percentage: ((?1 / ?4) * 100). Use MAX command to convert to Amps.
+
+3. Command Summary
+
+Command	Description	Command	Description
+AD X	Read ADC channel (0-9)	N	Main Power ON
+ADR	Read MPS address	NASW	No answer mode
+ADR XXX	Write MPS address (00-63)	NERR	No error message
+ASW	Enter answer mode	PO	Read polarity status
+BAUD XXXXX	Set baud rate	PO+	Change to normal polarity
+CMD	Read current control mode (REM/LOC)	PO-	Change to reverse polarity
+CMDSTATE	Read detailed control state	PRINT	Print unit info
+ERRC	Coded error message	RA	Read DAC set value
+ERRT	Text string error message	RAR	Read actual ramp end value
+F	Main Power OFF	REM	Change to remote control
+GOFF	Global OFF	RLOCK	Remote lock
+LALL	Listen ALL (multi-unit)	RR	Read slew rate
+LOC	Change to local control	RS	Reset interlocks
+LOCK	Lock MPS in local control	S1	Read status string
+MAX	Read maximum allowed current	SYN	Synchronize communication (Ctrl+V)
+?1, ?2, ?3, ?4	Quick binary read commands	TS stack	Trigger sequence
+UNLOCK	Unlock MPS
+VER	Read version info
+WA XXXXXX	Write DAC set value
+WAR XXXXXX	Write ramp end value
+WR XXX	Write slew rate
+DANFYSIK A/S - DK-4040 JYLLINGE - DENMARK
+Document: P80303ML / P80303WH
+
+
+1. Power Control
+Command	Function	Syntax	Expected Answer / Notes
+N	Main Power ON	N	No answer. Requires no interlock errors. Use after F or RS if errors were present.
+F	Main Power OFF	F	No answer. Clears interlocks if the fault is gone.
+GOFF	Global OFF (soft shutdown)	GOFF	No answer. Ensures output is at minimum before turning off.
+RS	Reset interlocks	RS	No answer. Clears latched error states.
+2. Setting & Reading Current
+Command	Function	Syntax	Expected Answer / Notes
+WA	Write current setpoint (DAC)	WA XXXXXX (6 digits)	No answer. Sets target current. Formula: Io = In * (value / 1,000,000).
+RA	Read current setpoint (DAC)	RA	DDDDDD (6 digits). Convert back using the same formula.
+WAR	Write ramp end value	WAR XXXXXX (≥001000)	No answer. Sets the final current for ramping.
+RAR	Read ramp end value	RAR	RAR 025352 (6 digits with leading zeros).
+WR	Write ramp speed (slew rate)	WR XXX (001-100)	No answer. Value = 0.1% to 10% of rated current per second. Default 050 (5%).
+RR	Read ramp speed	RR	RR 050 (3 digits with leading zeros).
+AD 0	Read output current (relative)	AD 0	DDD (0-999). Represents (I/In)*100.
+AD 8	Read high-resolution current (if equipped)	AD 8	DDDDDD (0-999999). Represents (I/In)*100000.
+?1	Quick binary read of high-def ADC (raw)	?1	24-bit binary value. Use with ?4 for % calculation.
+?4	Read ADC 100% calibration value (raw)	?4	24-bit binary value. Max reference for ?1.
+
+3. Polarity Control (if equipped)
+Command	Function	Syntax	Expected Answer
+PO	Read polarity	PO	+ (Normal), - (Reverse), N or O (Neutral/Off).
+PO+	Set to Normal polarity	PO+	No answer.
+PO-	Set to Reverse polarity	PO-	No answer.
+
+4. Status & Monitoring
+Command	Function	Syntax	Expected Answer / Notes
+S1	Read status string (24 bits)	S1	24 chars of ! (error) and . (normal). Detailed interlock/polarity info.
+?2	Quick binary status read	?2	32-bit binary. Maps to S1 bits.
+?3	Combined status + ADC read	?3	32-bit status + 24-bit ADC (binary). Fast monitoring.
+CMD	Read control mode	CMD	REM (Remote) or LOC (Local).
+CMDSTATE	Detailed control state	CMDSTATE	REMOTE, LOCAL, or LOCK.
+PRINT	Read unit info (serial/model)	PRINT	Two lines of text.
+VER	Read firmware version	VER	Three lines of text (version, copyright, date).
+5. Error Handling
+Command	Function	Syntax	Expected Answer / Notes
+ERRC	Enable coded error messages	ERRC	No answer. Afterwards, errors return a numeric code (1-16).
+ERRT	Enable text error messages	ERRT	No answer. Afterwards, errors return a descriptive string.
+NERR	Suppress detailed errors	NERR	No answer. Only ?BELL (ASCII 7) on error.
+(Any error)	—	—	Response includes ?BELL. Check S1 for details.
+6. Addressing & Communication Control
+Command	Function	Syntax	Expected Answer / Notes
+ADR	Read/Write unit address	ADR (read) / ADR XXX (write)	Read: address. Write: No answer. Range 00-63.
+LALL	Listen All mode (multi-unit)	LALL	No answer. All units accept commands (except N). Disabled by first ADR.
+ASW	Auto-answer mode for some commands	ASW	No answer. Enables answers for WA, PO+/-, W1-W3.
+NASW	Disable auto-answer	NASW	No answer.
+SYN	Synchronize serial line (reset)	Ctrl+V (ASCII 16)	Possible S. Wait 150 µs then send CR.
+7. Local/Remote & Locking
+Command	Function	Syntax	Expected Answer
+LOC	Switch control to Local panel	LOC	No answer.
+REM	Switch control to Remote line	REM	No answer. Fails if locked locally.
+LOCK	Lock control to Local (from remote)	LOCK	No answer. Emergency use only.
+UNLOCK	Unlock Local lock (from remote)	UNLOCK	No answer. Emergency use only.
+RLOCK	Lock control to Remote	RLOCK	No answer. Prevents panel from taking control.
+
+
+Complete Protocol for a Single Power Supply (Slave)
+Here's the complete step-by-step protocol to fully control one specific power supply unit.
+
+1. INITIALIZATION & SELECTION
+plaintext
+SYN                    # Ctrl+V (ASCII 16) - Optional: reset serial if needed
+(Wait 150µs)
+CR                     # Carriage return
+
+REM                    # Switch to remote control mode
+ADR XXX                # Select specific unit (XXX = 00-63)
+Expected:
+
+REM (if you send CMD after)
+
+No response from ADR XXX (unless error)
+
+2. READ CURRENT (in Amps)
+Method A: Using RA command (DAC value)
+plaintext
+RA                     # Read current setpoint register
+Response: DDDDDD (6 digits, e.g., 500000)
+
+Calculation to Amps:
+
+text
+Actual Current (A) = Nominal Current × (RA_value ÷ 1,000,000)
+Example: If nominal = 100A and RA returns 500000 → 100 × (500000/1000000) = 50A
+
+Method B: Using AD 0 (relative reading)
+plaintext
+AD 0                   # Read channel 0 (output current)
+Response: 0 DDD (3 digits, 000-999)
+
+Calculation to Amps:
+
+text
+Actual Current (A) = Nominal Current × (AD0_value ÷ 100)
+Example: If nominal = 100A and AD0 returns 750 → 100 × (750/100) = 750A? Wait, that's 750%!* *Note: AD0 shows (I/In)×100, so750` = 7.5×In. For In=100A, that's 750A. This may be unrealistic - check your unit's max rating.*
+
+Method C: High-resolution (if equipped)
+plaintext
+AD 8                   # 16-bit ADC (if available)
+Response: 8 DDDDDD (6 digits, 000000-999999)
+
+Calculation:
+
+text
+Actual Current (A) = Nominal Current × (AD8_value ÷ 100,000)
+3. WRITE/SET CURRENT (in Amps)
+Step 1: Calculate DAC value
+
+text
+DAC_value = (Desired_Current ÷ Nominal_Current) × 1,000,000
+*Round to nearest integer between 000001-999999*
+
+Step 2: Send command
+
+plaintext
+WA XXXXXX             # Write DAC value (6 digits)
+Example: For 35A on a 100A unit → (35÷100)×1000000 = 350000 → WA 350000
+
+Step 3: Optional - Set ramp end point
+
+plaintext
+WAR XXXXXX            # Set ramp end value (same calculation as WA)
+Step 4: Turn ON (if not already)
+
+plaintext
+N                     # Main power ON
+4. READ/WRITE RAMP SPEED
+Read current ramp speed:
+plaintext
+RR                    # Read slew rate
+Response: RR DDD (3 digits with leading zeros, e.g., RR 050)
+
+Interpretation:
+
+text
+Ramp Speed (% of In/sec) = RR_value ÷ 10
+Example: RR 050 = 5.0% of nominal current per second
+
+Write new ramp speed:
+plaintext
+WR DDD                # Write slew rate (001-100)
+Example: For 2.5%/sec → 2.5×10 = 25 → WR 025
+
+5. READ VOLTAGE
+plaintext
+AD 2                  # Read output voltage channel
+Response: 2 DDD (3 digits, 000-999)
+
+Calculation to Volts:
+
+text
+Actual Voltage (V) = Nominal Voltage × (AD2_value ÷ 100)
+Example: If nominal = 50V and AD2 returns 800 → 50 × (800/100) = 400V
+
+Note: Some units may show actual volts if switch #3 is set and special PROM installed.
+
+6. READ STATE & FAULTS
+Method A: Detailed status (S1)
+plaintext
+S1                    # Read 24-bit status string
+Response: 24 characters of ! (error) and . (normal)
+
+Key bits interpretation:
+
+Bit 1: Main Power OFF
+
+Bit 2: Polarity Normal
+
+Bit 3: Polarity Reversed
+
+Bit 11: DC Overcurrent
+
+Bit 16: Waterflow Failure
+
+Bit 20: Panic Button / Door Switch
+
+Bit 21: Magnet Waterflow Failure
+
+Bit 23: MPS Not Ready
+
+Method B: Quick binary status
+plaintext
+?2                    # Binary status (32-bit)
+Response: 4 bytes of binary data (maps to S1 bits)
+
+Method C: Combined status + current
+plaintext
+?3                    # Status + ADC (fastest monitoring)
+Response: 32-bit status + 24-bit ADC (binary)
+
+7. READ/WRITE POLARITY
+Read current polarity:
+plaintext
+PO                    # Read polarity status
+Response: PO X where X = + (normal), - (reverse), N/O (neutral/off)
+
+Change polarity (if equipped):
+plaintext
+PO+                   # Set to normal polarity
+or
+
+plaintext
+PO-                   # Set to reverse polarity
+Important: Ensure current is at zero before changing polarity.
+
+8. ERROR HANDLING
+Enable error messages:
+plaintext
+ERRT                  # Text error messages (recommended)
+or
+
+plaintext
+ERRC                  # Coded error messages (1-16)
+Check for errors after each command:
+Listen for ?BELL (ASCII 7) sound
+
+Check response for error codes
+
+Use S1 to identify specific faults
+
+Clear errors:
+plaintext
+RS                    # Reset latched interlocks
+F                     # Power OFF (also clears some errors)
+N                     # Power ON again (if error cleared)
+9. COMPLETE EXAMPLE SESSION
+Controlling unit at address 23 (100A, 50V nominal):
+
+plaintext
+REM                    # Ensure remote control
+ADR 23                 # Select unit 23
+
+# Set slow ramp and current
+WR 010                 # 1%/sec ramp speed
+WA 250000              # Set to 25A (25% of 100A)
+WAR 250000             # Same as end point (no ramp)
+
+# Turn on
+N
+
+# Monitor
+AD 0                   # Check current (should show ~250)
+AD 2                   # Check voltage
+S1                     # Check status
+PO                     # Check polarity
+
+# Change to 50A with ramp
+WAR 500000             # Set new target to 50A
+# Current will ramp from 25A to 50A at 1A/sec (1% of 100A/sec)
+
+# Quick monitoring
+?3                     # Fast status + current read
+
+# When done
+F                      # Power OFF
+10. QUICK REFERENCE CARD
+Action	Command	Response	Calculation
+Select unit	ADR XX	(none)	XX = 00-63
+Read current	RA	DDDDDD	A = In × (val/1e6)
+Set current	WA DDDDDD	(none)	val = (A/In)×1e6
+Read voltage	AD 2	2 DDD	V = Vn × (val/100)
+Read status	S1	24 chars	!=error, .=normal
+Read polarity	PO	PO X	X=+, -, N, O
+Set polarity	PO+ or PO-	(none)	(if equipped)
+Read ramp	RR	RR DDD	%/sec = val/10
+Set ramp	WR DDD	(none)	val = (%/sec)×10
+Power ON	N	(none)	(if no errors)
+Power OFF	F	(none)	Clears errors
+Reset errors	RS	(none)	Clears latched
+IMPORTANT NOTES:
+Nominal Values Required: You MUST know your unit's nominal current (In) and voltage (Vn) for accurate Amp/Volt calculations.
+
+Safety Interlocks: The N command will fail if any interlock is active. Check S1 first.
+
+Ramp Behavior: Current changes gradually at the set ramp speed. Use WA for immediate setpoint, WAR for ramped change.
+
+Binary Commands: ?1, ?2, ?3, ?4 are faster but return binary data requiring parsing.
+
+Emergency Stop: In case of emergency, use GOFF (soft shutdown) or hardware panic button.
+
+Lockout: If control panel is locked (LOCK), you need UNLOCK (emergency only) before remote commands.
+
+This protocol gives you complete control over a single power supply unit for all typical operations.
+
+
+

@@ -1,0 +1,46 @@
+# Autosave request file for Danfysik SYS8X00 Power Supply
+# This file defines which PVs should be saved/restored across IOC restarts
+#
+# Usage: In st.cmd add:
+#   create_monitor_set("danfysik_settings.req", 30, "DEVICE=$(DEVICE_PREFIX)")
+
+# Device configuration settings
+$(DEVICE):ADDR_SP
+$(DEVICE):REMOTE.VAL  
+
+# Current and ramping settings
+$(DEVICE):I_SP.VAL
+$(DEVICE):RAMP_RATE_SP.VAL
+$(DEVICE):RAMP_END_SP.VAL
+
+# Polarity setting (if equipped)
+$(DEVICE):POL_SP.VAL
+
+# UNIMAG Interface settings (if loaded)
+# Comment out if UNIMAG interface is not used
+$(DEVICE):UNIMAG:I_SP.VAL
+$(DEVICE):UNIMAG:ENABLE.VAL
+$(DEVICE):UNIMAG:TIMEOUT.VAL
+$(DEVICE):UNIMAG:DEBUG_LEVEL.VAL
+
+# Control settings
+$(DEVICE):RLOCK.VAL
+
+# Alarm limits (if customized)
+$(DEVICE):I_RB.HIHI
+$(DEVICE):I_RB.HIGH  
+$(DEVICE):I_RB.LOW
+$(DEVICE):I_RB.LOLO
+$(DEVICE):I_RB.HHSV
+$(DEVICE):I_RB.HSV
+$(DEVICE):I_RB.LSV  
+$(DEVICE):I_RB.LLSV
+
+$(DEVICE):V_RB.HIHI
+$(DEVICE):V_RB.HIGH
+$(DEVICE):V_RB.LOW
+$(DEVICE):V_RB.LOLO
+$(DEVICE):V_RB.HHSV
+$(DEVICE):V_RB.HSV
+$(DEVICE):V_RB.LSV
+$(DEVICE):V_RB.LLSV

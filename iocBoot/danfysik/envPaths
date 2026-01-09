@@ -1,0 +1,7 @@
+# envPaths file for Danfysik IOC
+# Generated automatically - do not edit
+
+epicsEnvSet("ARCH","linux-x86_64")
+epicsEnvSet("IOC","danfysik")
+epicsEnvSet("TOP","/app/IOC-DEVEL/danfysik-sys8x00")
+epicsEnvSet("EPICS_BASE","/opt/epics/base")

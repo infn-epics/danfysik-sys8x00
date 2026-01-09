@@ -1,0 +1,346 @@
+# Danfysik SYS8X00 UNIMAG Interface
+# Provides simplified current control with automatic polarity and sequencing
+# Requires danfysik.template to be loaded first
+# Logic implemented in unimagControl.st (SNL state program)
+
+################################################################################
+# UNIMAG Current Setpoint - User Interface
+################################################################################
+# User sets current in A (positive or negative)
+# PV format: $(DEVICE):UNIMAG:CURRENT_SP
+# Monitored by SNL program for automatic sequencing
+record(ao, "$(DEVICE):UNIMAG:CURRENT_SP")
+{
+    field(DESC, "UNIMAG Current Setpoint (signed)")
+    field(EGU,  "A")
+    field(PREC, "$(PREC=3)")
+    field(DRVH, "$(IMAX)")
+    field(DRVL, "-$(IMAX)")
+    field(HOPR, "$(IMAX)")
+    field(LOPR, "-$(IMAX)")
+    field(VAL,  "0")
+}
+
+################################################################################
+# UNIMAG Current Readback - Signed Based on Polarity  
+################################################################################
+# Current readback (signed based on polarity)
+# PV format: $(DEVICE):UNIMAG:CURRENT_RB
+record(calcout, "$(DEVICE):UNIMAG:CURRENT_RB")
+{
+    field(DESC, "UNIMAG Current Readback (signed)")
+    field(INPA, "$(DEVICE):I_RB CP")
+    field(INPB, "$(DEVICE):POL_RB CP") 
+    field(CALC, "(B=\"-\")?(-A):A")
+    field(EGU,  "A")
+    field(PREC, "$(PREC=3)")
+    field(SCAN, "1 second")
+}
+
+################################################################################
+# State Machine Interface
+################################################################################
+
+# Overall state readback - decode state from individual status bits
+# PV format: $(DEVICE):UNIMAG:STATE_RB  
+# Values: 0=OFF, 1=STANDBY, 2=ON, 3=FAULT, 4=RAMPING, 5=POLARITY_CHANGE
+record(calcout, "$(DEVICE):UNIMAG:STATE_DECODE")
+{
+    field(DESC, "Decode Power Supply State")
+    field(INPA, "$(DEVICE):MAIN_PWR_ON CP")      # Main power status
+    field(INPB, "$(DEVICE):CTRL_MODE CP MS")     # Control mode
+    field(INPC, "$(DEVICE):STATUS CP MS")        # Status string  
+    field(INPD, "$(DEVICE):UNIMAG:POL_CHANGING") # Polarity changing flag
+    field(INPE, "$(DEVICE):UNIMAG:RAMPING")      # Ramping flag
+    field(CALC, "D?5:(E?4:((C[0]=33)||(C[10]=33)||(C[15]=33)||(C[19]=33)||(C[20]=33)||(C[22]=33))?3:(A?2:1))")
+    field(OUT,  "$(DEVICE):UNIMAG:STATE_RB PP")
+    field(SCAN, "1 second")
+}
+
+record(mbbi, "$(DEVICE):UNIMAG:STATE_RB")
+{
+    field(DESC, "UNIMAG Power Supply State")
+    field(INP,  "$(DEVICE):UNIMAG:STATE_DECODE NPP MS")
+    field(ZRST, "OFF")
+    field(ONST, "STANDBY") 
+    field(TWST, "ON")
+    field(THST, "FAULT")
+    field(FRST, "RAMPING")
+    field(FVST, "POL_CHANGE")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(ZRSV, "MAJOR")     # OFF is a fault condition
+    field(ONSV, "NO_ALARM")  # STANDBY is normal
+    field(TWSV, "NO_ALARM")  # ON is normal
+    field(THSV, "MAJOR")     # FAULT is major alarm
+    field(FRSV, "MINOR")     # RAMPING is minor (transitioning)
+    field(FVSV, "MINOR")     # POL_CHANGE is minor (transitioning)
+}
+
+# State control setpoint
+# PV format: $(DEVICE):UNIMAG:STATE_SP
+# Allows user to command state changes
+record(mbbo, "$(DEVICE):UNIMAG:STATE_SP")
+{
+    field(DESC, "Set UNIMAG Power Supply State")
+    field(ZRST, "OFF")
+    field(ONST, "STANDBY") 
+    field(TWST, "ON")
+    field(THST, "RESET")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FLNK, "$(DEVICE):UNIMAG:STATE_PROCESS")
+}
+
+# Process state change requests
+record(seq, "$(DEVICE):UNIMAG:STATE_PROCESS")
+{
+    field(DESC, "Process UNIMAG State Command")
+    field(SELM, "Specified")
+    field(SELL, "$(DEVICE):UNIMAG:STATE_SP NPP MS")
+    # Link 0: OFF command → power off
+    field(DOL0, "0")
+    field(LNK0, "$(DEVICE):POWER_SP PP")
+    # Link 1: STANDBY command → power off (same as OFF for Danfysik)
+    field(DOL1, "0") 
+    field(LNK1, "$(DEVICE):POWER_SP PP")
+    # Link 2: ON command → power on
+    field(DOL2, "1")
+    field(LNK2, "$(DEVICE):POWER_SP PP")
+    # Link 3: RESET command → reset interlocks
+    field(DOL3, "1")
+    field(LNK3, "$(DEVICE):RESET PP")
+}
+
+################################################################################
+# Internal State Flags for SNL Program
+################################################################################
+
+# Flag indicating polarity is being changed
+record(bo, "$(DEVICE):UNIMAG:POL_CHANGING")
+{
+    field(DESC, "Polarity Change in Progress")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(VAL,  "0")
+}
+
+# Flag indicating ramping is in progress  
+record(bo, "$(DEVICE):UNIMAG:RAMPING")
+{
+    field(DESC, "Ramping in Progress")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+    field(VAL,  "0")
+}
+
+# Target polarity for SNL program (1=positive, 0=negative)
+record(bo, "$(DEVICE):UNIMAG:TARGET_POL")
+{
+    field(DESC, "Target Polarity")
+    field(ZNAM, "Negative")
+    field(ONAM, "Positive")
+    field(VAL,  "1")
+}
+
+# Absolute target current for SNL program
+record(ao, "$(DEVICE):UNIMAG:TARGET_ABS_CURR")
+{
+    field(DESC, "Target Absolute Current")
+    field(EGU,  "A")
+    field(PREC, "$(PREC=3)")
+    field(VAL,  "0")
+}
+
+# Command to start the sequence (written by SNL program)
+record(bo, "$(DEVICE):UNIMAG:START_SEQ")
+{
+    field(DESC, "Start UNIMAG Sequence")
+    field(ZNAM, "Idle")
+    field(ONAM, "Start")
+    field(VAL,  "0")
+}
+
+# Sequence step indicator for diagnostics
+record(mbbo, "$(DEVICE):UNIMAG:SEQ_STEP")
+{
+    field(DESC, "Current Sequence Step")
+    field(ZRST, "IDLE")
+    field(ONST, "CHECK_POL") 
+    field(TWST, "RAMP_ZERO")
+    field(THST, "POWER_OFF")
+    field(FRST, "CHG_POLARITY")
+    field(FVST, "POWER_ON")
+    field(SXST, "SET_CURRENT")
+    field(SVST, "COMPLETE")
+    field(EIST, "ERROR")
+    field(VAL,  "0")
+}
+
+################################################################################
+# Status and Diagnostics
+################################################################################
+
+# Interlock status summary
+record(calc, "$(DEVICE):UNIMAG:INTERLOCKED")
+{
+    field(DESC, "Interlock Active")
+    field(INPA, "$(DEVICE):STATUS CP MS")
+    field(CALC, "(A[0]=33)||(A[10]=33)||(A[15]=33)||(A[19]=33)||(A[20]=33)||(A[22]=33)")
+    field(ZNAM, "No Interlock")
+    field(ONAM, "Interlocked")
+}
+
+# Ready for operation
+record(calc, "$(DEVICE):UNIMAG:READY")  
+{
+    field(DESC, "Ready for Operation")
+    field(INPA, "$(DEVICE):UNIMAG:INTERLOCKED CP")
+    field(INPB, "$(DEVICE):CONNECTED CP")
+    field(INPC, "$(DEVICE):CTRL_MODE CP MS")
+    field(CALC, "!A&&B&&(C=\"REM\")")
+    field(ZNAM, "Not Ready")
+    field(ONAM, "Ready")
+}
+
+# Current difference (setpoint vs readback)
+record(calc, "$(DEVICE):UNIMAG:CURR_DIFF")
+{
+    field(DESC, "Current Difference")
+    field(INPA, "$(DEVICE):UNIMAG:CURRENT_SP CP")
+    field(INPB, "$(DEVICE):UNIMAG:CURRENT_RB CP")
+    field(CALC, "ABS(A-B)")
+    field(EGU,  "A")
+    field(PREC, "$(PREC=3)")
+}
+
+# At setpoint indicator (within tolerance)
+record(calc, "$(DEVICE):UNIMAG:AT_SETPOINT")
+{
+    field(DESC, "At Setpoint")  
+    field(INPA, "$(DEVICE):UNIMAG:CURR_DIFF CP")
+    field(CALC, "A<$(TOLERANCE=1.0)")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+################################################################################
+# Polarity Management Helper Records
+################################################################################
+
+# Current polarity as binary (1=positive, 0=negative)
+record(calc, "$(DEVICE):UNIMAG:CURR_POL_BIN")
+{
+    field(DESC, "Current Polarity Binary")
+    field(INPA, "$(DEVICE):POL_RB CP MS")
+    field(CALC, "(A=\"+\")?1:0")
+    field(SCAN, "1 second")
+}
+
+# Polarity change needed
+record(calc, "$(DEVICE):UNIMAG:POL_CHG_NEEDED")
+{
+    field(DESC, "Polarity Change Needed")
+    field(INPA, "$(DEVICE):UNIMAG:TARGET_POL CP")
+    field(INPB, "$(DEVICE):UNIMAG:CURR_POL_BIN CP")  
+    field(CALC, "A!=B")
+    field(ZNAM, "No")
+    field(ONAM, "Yes")
+}
+
+################################################################################
+# Operation Statistics
+################################################################################
+
+# Operation counter
+record(calc, "$(DEVICE):UNIMAG:OP_COUNT")
+{
+    field(DESC, "Operation Counter")
+    field(INPA, "$(DEVICE):UNIMAG:OP_COUNT")
+    field(CALC, "A+1")
+    field(VAL,  "0")
+}
+
+# Last operation timestamp  
+record(stringout, "$(DEVICE):UNIMAG:LAST_OP")
+{
+    field(DESC, "Last Operation Time")
+    field(VAL,  "Never")
+}
+
+# Error counter
+record(calc, "$(DEVICE):UNIMAG:ERROR_COUNT")
+{
+    field(DESC, "Error Counter")
+    field(INPA, "$(DEVICE):UNIMAG:ERROR_COUNT")
+    field(CALC, "A+1")
+    field(VAL,  "0")
+}
+
+# Last error message
+record(stringout, "$(DEVICE):UNIMAG:LAST_ERROR")
+{
+    field(DESC, "Last Error Message")
+    field(VAL,  "None")
+}
+
+################################################################################
+# Expert/Debug Interface
+################################################################################
+
+# Enable/disable automatic operation
+record(bo, "$(DEVICE):UNIMAG:AUTO_ENABLE")
+{
+    field(DESC, "Enable Automatic Operation")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(VAL,  "1")
+    field(PINI, "YES")
+}
+
+# Manual polarity control (bypasses automatic)
+record(bo, "$(DEVICE):UNIMAG:MANUAL_POL")
+{
+    field(DESC, "Manual Polarity Control")
+    field(ZNAM, "Auto")
+    field(ONAM, "Manual")
+    field(VAL,  "0")
+}
+
+# Sequence timeout setting (seconds)
+record(ao, "$(DEVICE):UNIMAG:TIMEOUT")
+{
+    field(DESC, "Sequence Timeout")
+    field(EGU,  "s")
+    field(PREC, "1")
+    field(VAL,  "30.0")
+    field(DRVL, "5.0")
+    field(DRVH, "300.0")
+}
+
+# Debug level
+record(mbbo, "$(DEVICE):UNIMAG:DEBUG")
+{
+    field(DESC, "Debug Level")
+    field(ZRST, "OFF")
+    field(ONST, "ERROR")
+    field(TWST, "WARN") 
+    field(THST, "INFO")
+    field(FRST, "DEBUG")
+    field(VAL,  "1")
+}
+
+################################################################################
+# Compatibility Aliases
+################################################################################
+
+# Aliases for compatibility with existing systems
+alias("$(DEVICE):UNIMAG:CURRENT_SP", "$(DEVICE):UNIMAG:I_SP")
+alias("$(DEVICE):UNIMAG:CURRENT_RB", "$(DEVICE):UNIMAG:I_RB")
+alias("$(DEVICE):UNIMAG:STATE_RB", "$(DEVICE):UNIMAG:STATUS")

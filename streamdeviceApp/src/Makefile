@@ -8,16 +8,22 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the IOC application
 
-PROD_IOC = streamdeviceSample
-# streamdeviceSample.dbd will be created and installed
-DBD += streamdeviceSample.dbd
+PROD_IOC = danfysiksys8x00
+# danfysiksys8x00.dbd will be created and installed
+DBD += danfysiksys8x00.dbd
 
-# streamdeviceSample.dbd will be made up from these files:
-streamdeviceSample_DBD += base.dbd
-streamdeviceSample_DBD += stream.dbd ## streamdevice.dbd
-streamdeviceSample_DBD += asyn.dbd 
-streamdeviceSample_DBD += drvAsynIPPort.dbd
-streamdeviceSample_DBD += drvAsynSerialPort.dbd
+# danfysiksys8x00.dbd will be made up from these files:
+danfysiksys8x00_DBD += base.dbd
+danfysiksys8x00_DBD += stream.dbd ## streamdevice.dbd
+danfysiksys8x00_DBD += asyn.dbd 
+danfysiksys8x00_DBD += drvAsynIPPort.dbd
+danfysiksys8x00_DBD += drvAsynSerialPort.dbd
+
+# Add sequencer support for UNIMAG functionality
+ifneq ($(SNCSEQ),)
+danfysiksys8x00_DBD += seq.dbd
+danfysiksys8x00_LIBS += seq pv
+endif
 
 
 # Include dbd files from all support applications:
@@ -25,22 +31,29 @@ streamdeviceSample_DBD += drvAsynSerialPort.dbd
 
 # Add all the support libraries needed by this IOC
 #streamdevice_LIBS += xxx
-streamdeviceSample_LIBS += stream
-streamdeviceSample_LIBS += asyn
+danfysiksys8x00_LIBS += stream
+danfysiksys8x00_LIBS += asyn
 
 
 # streamdevice_registerRecordDeviceDriver.cpp derives from streamdevice.dbd
-streamdeviceSample_SRCS += streamdeviceSample_registerRecordDeviceDriver.cpp
+danfysiksys8x00_SRCS += danfysiksys8x00_registerRecordDeviceDriver.cpp
 
 # Build the main IOC entry point on workstation OSs.
-streamdeviceSample_SRCS_DEFAULT += streamdeviceSampleMain.cpp
-streamdeviceSample_SRCS_vxWorks += -nil-
+danfysiksys8x00_SRCS_DEFAULT += danfysiksys8x00Main.cpp
+danfysiksys8x00_SRCS_vxWorks += -nil-
 
 # Add support from base/src/vxWorks if needed
-#streamdeviceSample_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
+#danfysiksys8x00_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
+
+# State Notation Language (SNL) support for UNIMAG sequencing
+ifneq ($(SNCSEQ),)
+danfysiksys8x00_DBD += snc.dbd
+danfysiksys8x00_LIBS += seq pv
+danfysiksys8x00_SRCS += danfysikUnimagControl.st
+endif
 
 # Finally link to the EPICS Base libraries
-streamdeviceSample_LIBS += $(EPICS_BASE_IOC_LIBS)
+danfysiksys8x00_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 

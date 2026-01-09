@@ -1,0 +1,253 @@
+# StreamDevice Protocol for Danfysik System SYS8X00 Power Supply
+# Based on Danfysik System SYS8X00 Command Reference
+# Created: January 2026
+
+# Communication parameters
+terminator   = CR;          # Commands terminated by Carriage Return
+replyterminator = LF CR;    # Responses terminated by Line Feed + Carriage Return  
+replytimeout = 2000;        # 2 second timeout for responses
+readtimeout  = 2000;        # 2 second read timeout
+extrainput   = Ignore;      # Ignore extra input
+
+# Error handling - responses with error include "?BELL" (ASCII 7)
+# We'll handle this by checking for the bell character in responses
+
+################################################################################
+# Basic Control Commands
+################################################################################
+
+# Power ON - Switch main power contactor ON
+power_on    { out "N"; }
+
+# Power OFF - Switch main power contactor OFF  
+power_off   { out "F"; }
+
+# Global OFF - Soft shutdown ensuring DAC at minimum before turning off
+global_off  { out "GOFF"; }
+
+# Reset interlocks - Clear latched error states
+reset       { out "RS"; }
+
+################################################################################
+# Remote/Local Control
+################################################################################
+
+# Switch to remote control
+remote_ctrl { out "REM"; }
+
+# Switch to local control  
+local_ctrl  { out "LOC"; }
+
+# Read current control mode
+get_cmd_mode { out "CMD"; in "%3c"; }
+
+# Read detailed control state
+get_cmd_state { out "CMDSTATE"; in "%8c"; }
+
+# Remote lock - prevent local panel from taking control
+remote_lock { out "RLOCK"; }
+
+# Unlock from remote (emergency use)
+unlock      { out "UNLOCK"; }
+
+################################################################################
+# Addressing Commands
+################################################################################
+
+# Read MPS address
+get_address { out "ADR"; in "%d"; }
+
+# Set MPS address (00-63)
+set_address { out "ADR %02d"; }
+
+# Listen all mode - for multi-unit configuration
+listen_all  { out "LALL"; }
+
+################################################################################
+# Current Setting and Reading (DAC based)
+################################################################################
+
+# Write current setpoint (6 digits: 000000-999999)
+# Formula: DAC_value = (Desired_Current / Nominal_Current) * 1,000,000
+set_current { out "WA %06d"; }
+
+# Read current setpoint (6 digits)
+# Formula: Current = Nominal_Current * (DAC_value / 1,000,000)
+get_current_sp { out "RA"; in "%d"; }
+
+# Write ramp end value (for ramping)
+set_ramp_end { out "WAR %06d"; }
+
+# Read ramp end value
+get_ramp_end { out "RAR"; in "RAR %d"; }
+
+################################################################################
+# Ramp Speed Control
+################################################################################
+
+# Write ramp speed (001-100 = 0.1% to 10% of rated current per second)
+set_ramp_speed { out "WR %03d"; }
+
+# Read ramp speed
+get_ramp_speed { out "RR"; in "RR %d"; }
+
+################################################################################
+# ADC Channel Readings
+################################################################################
+
+# Read output current (Channel 0) - returns (I/In)*100
+get_output_current { out "AD 0"; in "0 %d"; }
+
+# Read Tesla field (Channel 1) - returns T*100
+get_tesla { out "AD 1"; in "1 %d"; }
+
+# Read output voltage (Channel 2) - returns (V/Vn)*100
+get_output_voltage { out "AD 2"; in "2 %d"; }
+
+# Read +15V supply (Channel 3) - returns V*10
+get_p15v { out "AD 3"; in "3 %d"; }
+
+# Read -15V supply (Channel 4) - returns V*10
+get_m15v { out "AD 4"; in "4 %d"; }
+
+# Read +5V supply (Channel 5) - returns V*10
+get_p5v { out "AD 5"; in "5 %d"; }
+
+# Read delta temperature (Channel 6) - returns Deg.C*10 with sign
+get_temp_delta { out "AD 6"; in "6 %d"; }
+
+# Read transistor bank Vce (Channel 7) - returns V
+get_vce { out "AD 7"; in "7 %d"; }
+
+# Read optional high-res current (Channel 8) - returns (I/In)*100000 if equipped
+get_hires_current { out "AD 8"; in "8 %d"; }
+
+# Read aux current (Channel 9) - returns (I/In)*120
+get_aux_current { out "AD 9"; in "9 %d"; }
+
+################################################################################
+# Polarity Control
+################################################################################
+
+# Read polarity status
+get_polarity { out "PO"; in "PO %c"; }
+
+# Set normal polarity
+set_pol_normal { out "PO+"; }
+
+# Set reverse polarity  
+set_pol_reverse { out "PO-"; }
+
+################################################################################
+# Status and Error Monitoring  
+################################################################################
+
+# Read 24-bit status string (interlocks, polarity, on/off status)
+# Returns 24 characters: '!' = error/non-normal, '.' = normal
+get_status { out "S1"; in "%24c"; }
+
+################################################################################
+# Communication Control
+################################################################################
+
+# Set error response mode to text
+error_text { out "ERRT"; }
+
+# Set error response mode to codes
+error_code { out "ERRC"; }
+
+# Suppress detailed error messages (only BELL on error)
+no_error { out "NERR"; }
+
+# Auto-answer mode for certain commands
+answer_mode { out "ASW"; }
+
+# Disable auto-answer mode
+no_answer { out "NASW"; }
+
+# Set baud rate (19200, 9600, 4800, 2400, 1200, 600, 300, 150)
+set_baud { out "BAUD %d"; }
+
+################################################################################
+# Information Commands
+################################################################################
+
+# Read unit information (serial number, type)
+get_info { out "PRINT"; in "%80c"; }
+
+# Read firmware version information  
+get_version { out "VER"; in "%80c"; }
+
+################################################################################
+# Binary Quick Read Commands (for high-speed monitoring)
+################################################################################
+
+# Quick binary read of high-definition current ADC (24-bit raw)
+# Note: StreamDevice may need special handling for binary data
+quick_current_bin { out "?1"; in "%4r"; }
+
+# Quick binary read of status (32-bit)
+quick_status_bin { out "?2"; in "%4r"; }
+
+# Quick binary read combined status + ADC (32-bit + 24-bit)
+quick_combined_bin { out "?3"; in "%7r"; }
+
+# Read ADC 100% calibration value (24-bit)
+quick_cal_bin { out "?4"; in "%4r"; }
+
+################################################################################
+# Sequence Control  
+################################################################################
+
+# Trigger programmed sequence from first position (stack 0-3)
+trigger_seq { out "TS %d"; }
+
+################################################################################
+# Synchronization
+################################################################################
+
+# Synchronize communication (equivalent to Ctrl+V, ASCII 16)
+# Note: This may need special handling in StreamDevice
+sync_comm { out "\x10"; wait 150; out "\r"; }
+
+################################################################################
+# Composite Operations for Common Use Cases
+################################################################################
+
+# Initialize power supply for remote operation
+init_remote {
+    out "REM";           # Switch to remote
+    out "ERRT";          # Enable text error messages
+    out "RS";            # Clear any latched errors
+}
+
+# Safe shutdown sequence
+safe_shutdown {
+    out "GOFF";          # Global off (soft shutdown)
+}
+
+# Read all vital parameters in sequence
+read_all_params {
+    out "RA"; in "%d";           # Current setpoint
+    out "AD 0"; in "0 %d";       # Output current
+    out "AD 2"; in "2 %d";       # Output voltage  
+    out "PO"; in "PO %c";        # Polarity
+    out "S1"; in "%24c";         # Status
+    out "CMD"; in "%3c";         # Control mode
+}
+
+################################################################################
+# Error handling with status check
+################################################################################
+
+# Set current with status verification
+set_current_safe {
+    out "WA %06d";              # Set current
+    out "S1"; in "%24c";        # Check status after
+}
+
+# Power on with status check
+power_on_safe {
+    out "N";                    # Power on
+    out "S1"; in "%24c";        # Check status
+}

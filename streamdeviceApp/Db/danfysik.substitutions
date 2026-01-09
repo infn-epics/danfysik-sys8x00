@@ -1,0 +1,45 @@
+# Substitutions file for Danfysik SYS8X00 Power Supply
+# This file provides examples for instantiating the Danfysik power supply database
+# 
+# Usage: dbLoadTemplate("danfysik.substitutions")
+#
+# Macro definitions:
+# DEVICE    - Device prefix (e.g., "PS:DANFYSIK:01")  
+# PORT      - asyn port name (e.g., "DANFYSIK_PORT")
+# ADDR      - Power supply address (0-63)
+# IMAX      - Maximum current in Amperes (e.g., 100.0)
+# VMAX      - Maximum voltage in Volts (e.g., 50.0)
+# PREC      - Precision for floating point displays (default: 3)
+# SCAN_FAST - Fast scan rate for monitoring (default: "1 second")
+# SCAN_SLOW - Slow scan rate for monitoring (default: "10 second")
+
+file "db/danfysik.template" {
+    pattern
+    { DEVICE,           PORT,           ADDR, IMAX,   VMAX,  PREC, SCAN_FAST,    SCAN_SLOW     }
+    { "PS:DANFYSIK:01", "DANFYSIK_PORT", "1", "100.0", "50.0", "3", "1 second",  "10 second"   }
+}
+
+# Example for multiple power supplies on the same communication port:
+# Uncomment and modify as needed
+
+#file "db/danfysik.template" {
+#    pattern  
+#    { DEVICE,           PORT,           ADDR, IMAX,   VMAX,  PREC, SCAN_FAST,    SCAN_SLOW     }
+#    { "PS:DANFYSIK:01", "DANFYSIK_PORT", "1", "100.0", "50.0", "3", "1 second",  "10 second"   }
+#    { "PS:DANFYSIK:02", "DANFYSIK_PORT", "2", "200.0", "60.0", "3", "1 second",  "10 second"   }  
+#    { "PS:DANFYSIK:03", "DANFYSIK_PORT", "3", "150.0", "45.0", "3", "1 second",  "10 second"   }
+#    { "PS:DANFYSIK:04", "DANFYSIK_PORT", "4", "100.0", "50.0", "3", "1 second",  "10 second"   }
+#}
+
+# Example for different power supply types with different specifications:
+# Uncomment and modify as needed
+
+#file "db/danfysik.template" {
+#    pattern
+#    { DEVICE,              PORT,              ADDR, IMAX,    VMAX,   PREC, SCAN_FAST,    SCAN_SLOW     }
+#    { "PS:QUAD:01",        "DANFYSIK_PORT_1", "1",  "50.0",  "30.0", "3",  "1 second",   "10 second"   }
+#    { "PS:SEXT:01",        "DANFYSIK_PORT_1", "2",  "25.0",  "25.0", "3",  "1 second",   "10 second"   }
+#    { "PS:DIPOLE:MAIN",    "DANFYSIK_PORT_2", "1",  "500.0", "100.0", "3", "2 second",   "30 second"   }
+#    { "PS:CORRECTOR:H1",   "DANFYSIK_PORT_3", "1",  "10.0",  "20.0", "4",  "0.5 second", "5 second"    }
+#    { "PS:CORRECTOR:V1",   "DANFYSIK_PORT_3", "2",  "10.0",  "20.0", "4",  "0.5 second", "5 second"    }
+#}
