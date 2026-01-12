@@ -22,12 +22,8 @@ danfysikSupport_DBD += drvAsynSerialPort.dbd
 
 # Install support dbd into <top>/dbd
 # Include dbd for SNL program registrar
-danfysikSupport_DBD += danfysikUnimag.dbd
 # SNL program source (built into support library)
 danfysikSupport_SRCS += danfysikUnimagControl.st
-# Ensure the generated C is compiled as position-independent code for shared library
-danfysikUnimagControl_CFLAGS += -fPIC
-danfysikUnimagControl_CXXFLAGS += -fPIC
 # Link sequencer support and pv utilities into support library
 danfysikSupport_LIBS += seq pv
 # Link base IOC libs into support library
