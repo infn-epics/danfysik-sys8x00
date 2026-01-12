@@ -17,21 +17,21 @@
 # Device Information
 ################################################################################
 
-record(stringin, "$(DEVICE):INFO") 
-{
-    field(DESC, "Power Supply Information")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_info $(PORT)")
-    field(SCAN, "$(SCAN_SLOW=10 second)")
-    field(PINI, "YES")
-}
+# record(stringin, "$(DEVICE):INFO") 
+# {
+#     field(DESC, "Power Supply Information")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_info($(ADDR)) $(PORT)")
+#     field(SCAN, "$(SCAN_SLOW=10 second)")
+#     field(PINI, "YES")
+# }
 
 record(stringin, "$(DEVICE):VERSION") 
 {
     field(DESC, "Firmware Version")
     field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_version $(PORT)")
-    field(SCAN, "$(SCAN_SLOW=10 second)")
+    field(INP,  "@danfysik.proto get_version($(ADDR)) $(PORT)")
+    field(SCAN, "$(SCAN_SLOW=5 second)")
     field(PINI, "YES")
 }
 
@@ -39,561 +39,561 @@ record(stringin, "$(DEVICE):VERSION")
 # Address Control
 ################################################################################
 
-record(longin, "$(DEVICE):ADDR_RB")
-{
-    field(DESC, "MPS Address Readback")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_address $(PORT)")
-    field(SCAN, "$(SCAN_SLOW=10 second)")
-    field(PINI, "YES")
-}
+# record(longin, "$(DEVICE):ADDR_RB")
+# {
+#     field(DESC, "MPS Address Readback")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_address() $(PORT)")
+#     field(SCAN, "$(SCAN_SLOW=10 second)")
+#     field(PINI, "YES")
+# }
 
-record(longout, "$(DEVICE):ADDR_SP")
-{
-    field(DESC, "Set MPS Address")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto set_address $(PORT)")
-    field(DRVL, "0")
-    field(DRVH, "63")
-    field(VAL,  "$(ADDR=1)")
-    field(PINI, "YES")
-}
+# record(longout, "$(DEVICE):ADDR_SP")
+# {
+#     field(DESC, "Set MPS Address")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto set_address($(ADDR)) $(PORT)")
+#     field(DRVL, "0")
+#     field(DRVH, "63")
+#     field(VAL,  "$(ADDR=1)")
+#     field(PINI, "YES")
+# }
 
 ################################################################################
 # Control Mode and Status
 ################################################################################
 
-record(stringin, "$(DEVICE):CTRL_MODE")
-{
-    field(DESC, "Control Mode")
-    field(DTYP, "stream")  
-    field(INP,  "@danfysik.proto get_cmd_mode $(PORT)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-}
+# record(stringin, "$(DEVICE):CTRL_MODE")
+# {
+#     field(DESC, "Control Mode")
+#     field(DTYP, "stream")  
+#     field(INP,  "@danfysik.proto get_cmd_mode($(ADDR)) $(PORT)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+# }
 
-record(stringin, "$(DEVICE):CTRL_STATE")
-{
-    field(DESC, "Control State")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_cmd_state $(PORT)")  
-    field(SCAN, "$(SCAN_FAST=1 second)")
-}
+# record(stringin, "$(DEVICE):CTRL_STATE")
+# {
+#     field(DESC, "Control State")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_cmd_state($(ADDR)) $(PORT)")  
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+# }
 
 ################################################################################
 # Power Control
 ################################################################################
 
-record(bo, "$(DEVICE):POWER_SP")
-{
-    field(DESC, "Power On/Off")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto power_on $(PORT)")
-    field(ZNAM, "Off")
-    field(ONAM, "On")
-    field(HIGH, "1")
-    # Process OFF record when this goes to 0
-    field(FLNK, "$(DEVICE):POWER_OFF_PROC")
-}
+# record(bo, "$(DEVICE):POWER_SP")
+# {
+#     field(DESC, "Power On/Off")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto power_on($(ADDR)) $(PORT)")
+#     field(ZNAM, "Off")
+#     field(ONAM, "On")
+#     field(HIGH, "1")
+#     # Process OFF record when this goes to 0
+#     field(FLNK, "$(DEVICE):POWER_OFF_PROC")
+# }
 
 # Helper record to handle power off
-record(calcout, "$(DEVICE):POWER_OFF_PROC")
-{
-    field(DESC, "Process Power Off")
-    field(CALC, "A")
-    field(INPA, "$(DEVICE):POWER_SP")
-    field(OOPT, "When Zero")
-    field(DOPT, "Use OCAL")
-    field(OCAL, "0")
-    field(OUT,  "$(DEVICE):POWER_OFF PP")
-}
+# record(calcout, "$(DEVICE):POWER_OFF_PROC")
+# {
+#     field(DESC, "Process Power Off")
+#     field(CALC, "A")
+#     field(INPA, "$(DEVICE):POWER_SP")
+#     field(OOPT, "When Zero")
+#     field(DOPT, "Use OCAL")
+#     field(OCAL, "0")
+#     field(OUT,  "$(DEVICE):POWER_OFF PP")
+# }
 
-record(bo, "$(DEVICE):POWER_OFF")
-{
-    field(DESC, "Power Off Command")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto power_off $(PORT)")
-    field(ZNAM, "Off")
-    field(ONAM, "Off")
-}
+# record(bo, "$(DEVICE):POWER_OFF")
+# {
+#     field(DESC, "Power Off Command")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto power_off($(ADDR)) $(PORT)")
+#     field(ZNAM, "Off")
+#     field(ONAM, "Off")
+# }
 
-record(bo, "$(DEVICE):GOFF")
-{
-    field(DESC, "Global Soft Shutdown")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto global_off $(PORT)")
-    field(ZNAM, "Execute")
-    field(ONAM, "Execute")
-    field(VAL,  "0")
-}
+# record(bo, "$(DEVICE):GOFF")
+# {
+#     field(DESC, "Global Soft Shutdown")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto global_off($(ADDR)) $(PORT)")
+#     field(ZNAM, "Execute")
+#     field(ONAM, "Execute")
+#     field(VAL,  "0")
+# }
 
-record(bo, "$(DEVICE):RESET")
-{
-    field(DESC, "Reset Interlocks")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto reset $(PORT)")
-    field(ZNAM, "Reset")
-    field(ONAM, "Reset")
-    field(VAL,  "0")
-}
+# record(bo, "$(DEVICE):RESET")
+# {
+#     field(DESC, "Reset Interlocks")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto reset($(ADDR)) $(PORT)")
+#     field(ZNAM, "Reset")
+#     field(ONAM, "Reset")
+#     field(VAL,  "0")
+# }
 
 ################################################################################
 # Remote/Local Control
 ################################################################################
 
-record(bo, "$(DEVICE):REMOTE")
-{
-    field(DESC, "Remote Control")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto remote_ctrl $(PORT)")
-    field(ZNAM, "Local")
-    field(ONAM, "Remote")
-    field(PINI, "YES")
-    field(VAL,  "1")
-}
+# record(bo, "$(DEVICE):REMOTE")
+# {
+#     field(DESC, "Remote Control")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto remote_ctrl($(ADDR)) $(PORT)")
+#     field(ZNAM, "Local")
+#     field(ONAM, "Remote")
+#     field(PINI, "YES")
+#     field(VAL,  "1")
+# }
 
-record(bo, "$(DEVICE):RLOCK")
-{
-    field(DESC, "Remote Lock")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto remote_lock $(PORT)")
-    field(ZNAM, "Unlocked")
-    field(ONAM, "Locked")
-}
+# record(bo, "$(DEVICE):RLOCK")
+# {
+#     field(DESC, "Remote Lock")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto remote_lock($(ADDR)) $(PORT)")
+#     field(ZNAM, "Unlocked")
+#     field(ONAM, "Locked")
+# }
 
 ################################################################################
 # Current Control (Main)
 ################################################################################
 
-record(ao, "$(DEVICE):I_SP")
-{
-    field(DESC, "Current Setpoint")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto set_current $(PORT)")
-    field(EGU,  "A")
-    field(PREC, "$(PREC=3)")
-    field(DRVL, "0")
-    field(DRVH, "$(IMAX)")
-    field(HOPR, "$(IMAX)")
-    field(LOPR, "0")
-    # Convert Amps to DAC value: DAC = (I/Imax) * 1,000,000
-    field(ASLO, "1000000")
-    field(AOFF, "0")
-    field(LINR, "SLOPE")
-    field(ESLO, "$(IMAX)")
-    field(EOFF, "0")
-}
+# record(ao, "$(DEVICE):I_SP")
+# {
+#     field(DESC, "Current Setpoint")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto set_current($(ADDR)) $(PORT)")
+#     field(EGU,  "A")
+#     field(PREC, "$(PREC=3)")
+#     field(DRVL, "0")
+#     field(DRVH, "$(IMAX)")
+#     field(HOPR, "$(IMAX)")
+#     field(LOPR, "0")
+#     # Convert Amps to DAC value: DAC = (I/Imax) * 1,000,000
+#     field(ASLO, "1000000")
+#     field(AOFF, "0")
+#     field(LINR, "SLOPE")
+#     field(ESLO, "$(IMAX)")
+#     field(EOFF, "0")
+# }
 
-record(ai, "$(DEVICE):I_SP_RB")
-{
-    field(DESC, "Current Setpoint Readback")  
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_current_sp $(PORT)")
-    field(EGU,  "A")
-    field(PREC, "$(PREC=3)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-    field(HOPR, "$(IMAX)")
-    field(LOPR, "0")
-    # Convert DAC value to Amps: I = Imax * (DAC/1,000,000)
-    field(ASLO, "$(IMAX)")
-    field(AOFF, "0") 
-    field(LINR, "SLOPE")
-    field(ESLO, "0.000001")
-    field(EOFF, "0")
-}
+# record(ai, "$(DEVICE):I_SP_RB")
+# {
+#     field(DESC, "Current Setpoint Readback")  
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_current_sp($(ADDR)) $(PORT)")
+#     field(EGU,  "A")
+#     field(PREC, "$(PREC=3)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+#     field(HOPR, "$(IMAX)")
+#     field(LOPR, "0")
+#     # Convert DAC value to Amps: I = Imax * (DAC/1,000,000)
+#     field(ASLO, "$(IMAX)")
+#     field(AOFF, "0") 
+#     field(LINR, "SLOPE")
+#     field(ESLO, "0.000001")
+#     field(EOFF, "0")
+# }
 
-record(ai, "$(DEVICE):I_RB")
-{
-    field(DESC, "Output Current Readback")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_output_current $(PORT)")
-    field(EGU,  "A")
-    field(PREC, "$(PREC=3)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-    field(HOPR, "$(IMAX)")
-    field(LOPR, "0")
-    # Convert percentage to Amps: I = Imax * (reading/100)
-    field(ASLO, "$(IMAX)")
-    field(AOFF, "0")
-    field(LINR, "SLOPE") 
-    field(ESLO, "0.01")
-    field(EOFF, "0")
-}
+# record(ai, "$(DEVICE):I_RB")
+# {
+#     field(DESC, "Output Current Readback")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_output_current($(ADDR)) $(PORT)")
+#     field(EGU,  "A")
+#     field(PREC, "$(PREC=3)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+#     field(HOPR, "$(IMAX)")
+#     field(LOPR, "0")
+#     # Convert percentage to Amps: I = Imax * (reading/100)
+#     field(ASLO, "$(IMAX)")
+#     field(AOFF, "0")
+#     field(LINR, "SLOPE") 
+#     field(ESLO, "0.01")
+#     field(EOFF, "0")
+# }
 
 # High resolution current reading (if available)
-record(ai, "$(DEVICE):I_HIRES_RB")
-{
-    field(DESC, "High-Res Current Readback")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_hires_current $(PORT)")
-    field(EGU,  "A")
-    field(PREC, "5")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-    field(HOPR, "$(IMAX)")
-    field(LOPR, "0")
-    # Convert high-res percentage to Amps: I = Imax * (reading/100000)
-    field(ASLO, "$(IMAX)")
-    field(AOFF, "0")
-    field(LINR, "SLOPE")
-    field(ESLO, "0.00001") 
-    field(EOFF, "0")
-}
+# record(ai, "$(DEVICE):I_HIRES_RB")
+# {
+#     field(DESC, "High-Res Current Readback")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_hires_current($(ADDR)) $(PORT)")
+#     field(EGU,  "A")
+#     field(PREC, "5")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+#     field(HOPR, "$(IMAX)")
+#     field(LOPR, "0")
+#     # Convert high-res percentage to Amps: I = Imax * (reading/100000)
+#     field(ASLO, "$(IMAX)")
+#     field(AOFF, "0")
+#     field(LINR, "SLOPE")
+#     field(ESLO, "0.00001") 
+#     field(EOFF, "0")
+# }
 
 ################################################################################
 # Voltage Monitoring
 ################################################################################
 
-record(ai, "$(DEVICE):V_RB")
-{
-    field(DESC, "Output Voltage Readback")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_output_voltage $(PORT)")
-    field(EGU,  "V")
-    field(PREC, "$(PREC=3)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-    field(HOPR, "$(VMAX)")
-    field(LOPR, "0")
-    # Convert percentage to Volts: V = Vmax * (reading/100)
-    field(ASLO, "$(VMAX)")
-    field(AOFF, "0")
-    field(LINR, "SLOPE")
-    field(ESLO, "0.01")
-    field(EOFF, "0")
-}
+# record(ai, "$(DEVICE):V_RB")
+# {
+#     field(DESC, "Output Voltage Readback")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_output_voltage($(ADDR)) $(PORT)")
+#     field(EGU,  "V")
+#     field(PREC, "$(PREC=3)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+#     field(HOPR, "$(VMAX)")
+#     field(LOPR, "0")
+#     # Convert percentage to Volts: V = Vmax * (reading/100)
+#     field(ASLO, "$(VMAX)")
+#     field(AOFF, "0")
+#     field(LINR, "SLOPE")
+#     field(ESLO, "0.01")
+#     field(EOFF, "0")
+# }
 
 ################################################################################
 # Ramping Control
 ################################################################################
 
-record(ao, "$(DEVICE):RAMP_END_SP")
-{
-    field(DESC, "Ramp End Current")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto set_ramp_end $(PORT)")
-    field(EGU,  "A")
-    field(PREC, "$(PREC=3)")
-    field(DRVL, "0")
-    field(DRVH, "$(IMAX)")
-    field(HOPR, "$(IMAX)")
-    field(LOPR, "0")
-    # Convert Amps to DAC value
-    field(ASLO, "1000000")
-    field(AOFF, "0")
-    field(LINR, "SLOPE")
-    field(ESLO, "$(IMAX)")
-    field(EOFF, "0")
-}
+# record(ao, "$(DEVICE):RAMP_END_SP")
+# {
+#     field(DESC, "Ramp End Current")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto set_ramp_end($(ADDR)) $(PORT)")
+#     field(EGU,  "A")
+#     field(PREC, "$(PREC=3)")
+#     field(DRVL, "0")
+#     field(DRVH, "$(IMAX)")
+#     field(HOPR, "$(IMAX)")
+#     field(LOPR, "0")
+#     # Convert Amps to DAC value
+#     field(ASLO, "1000000")
+#     field(AOFF, "0")
+#     field(LINR, "SLOPE")
+#     field(ESLO, "$(IMAX)")
+#     field(EOFF, "0")
+# }
 
-record(ai, "$(DEVICE):RAMP_END_RB")
-{
-    field(DESC, "Ramp End Readback")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_ramp_end $(PORT)")
-    field(EGU,  "A")
-    field(PREC, "$(PREC=3)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-    field(HOPR, "$(IMAX)")
-    field(LOPR, "0")
-    # Convert DAC value to Amps
-    field(ASLO, "$(IMAX)")
-    field(AOFF, "0")
-    field(LINR, "SLOPE")
-    field(ESLO, "0.000001")
-    field(EOFF, "0")
-}
+# record(ai, "$(DEVICE):RAMP_END_RB")
+# {
+#     field(DESC, "Ramp End Readback")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_ramp_end($(ADDR)) $(PORT)")
+#     field(EGU,  "A")
+#     field(PREC, "$(PREC=3)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+#     field(HOPR, "$(IMAX)")
+#     field(LOPR, "0")
+#     # Convert DAC value to Amps
+#     field(ASLO, "$(IMAX)")
+#     field(AOFF, "0")
+#     field(LINR, "SLOPE")
+#     field(ESLO, "0.000001")
+#     field(EOFF, "0")
+# }
 
-record(ao, "$(DEVICE):RAMP_RATE_SP")
-{
-    field(DESC, "Ramp Rate")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto set_ramp_speed $(PORT)")
-    field(EGU,  "A/s")
-    field(PREC, "$(PREC=3)")
-    field(DRVL, "0")
-    field(DRVH, "$(IMAX)")
-    field(HOPR, "$(IMAX)")
-    field(LOPR, "0")
-    field(VAL,  "5.0")
-    # Convert A/s to percentage/s then to protocol value
-    # Protocol expects 001-100 representing 0.1%-10%/s
-    # So multiply by 10 to get protocol value, then scale by Imax
-    field(ASLO, "10")
-    field(AOFF, "0")
-    field(LINR, "SLOPE")
-    field(ESLO, "100")
-    field(EOFF, "0")  
-    field(EGUF, "$(IMAX)")
-    field(EGUL, "0")
-}
+# record(ao, "$(DEVICE):RAMP_RATE_SP")
+# {
+#     field(DESC, "Ramp Rate")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto set_ramp_speed($(ADDR)) $(PORT)")
+#     field(EGU,  "A/s")
+#     field(PREC, "$(PREC=3)")
+#     field(DRVL, "0")
+#     field(DRVH, "$(IMAX)")
+#     field(HOPR, "$(IMAX)")
+#     field(LOPR, "0")
+#     field(VAL,  "5.0")
+#     # Convert A/s to percentage/s then to protocol value
+#     # Protocol expects 001-100 representing 0.1%-10%/s
+#     # So multiply by 10 to get protocol value, then scale by Imax
+#     field(ASLO, "10")
+#     field(AOFF, "0")
+#     field(LINR, "SLOPE")
+#     field(ESLO, "100")
+#     field(EOFF, "0")  
+#     field(EGUF, "$(IMAX)")
+#     field(EGUL, "0")
+# }
 
-record(ai, "$(DEVICE):RAMP_RATE_RB")
-{
-    field(DESC, "Ramp Rate Readback")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_ramp_speed $(PORT)")
-    field(EGU,  "A/s")
-    field(PREC, "$(PREC=3)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-    field(HOPR, "$(IMAX)")
-    field(LOPR, "0")
-    # Convert protocol value to A/s
-    field(ASLO, "$(IMAX)")
-    field(AOFF, "0")
-    field(LINR, "SLOPE")
-    field(ESLO, "0.001")
-    field(EOFF, "0")
-}
+# record(ai, "$(DEVICE):RAMP_RATE_RB")
+# {
+#     field(DESC, "Ramp Rate Readback")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_ramp_speed($(ADDR)) $(PORT)")
+#     field(EGU,  "A/s")
+#     field(PREC, "$(PREC=3)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+#     field(HOPR, "$(IMAX)")
+#     field(LOPR, "0")
+#     # Convert protocol value to A/s
+#     field(ASLO, "$(IMAX)")
+#     field(AOFF, "0")
+#     field(LINR, "SLOPE")
+#     field(ESLO, "0.001")
+#     field(EOFF, "0")
+# }
 
 ################################################################################  
 # Polarity Control
 ################################################################################
 
-record(stringin, "$(DEVICE):POL_RB")
-{
-    field(DESC, "Polarity Readback")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_polarity $(PORT)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-}
+# record(stringin, "$(DEVICE):POL_RB")
+# {
+#     field(DESC, "Polarity Readback")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_polarity($(ADDR)) $(PORT)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+# }
 
-record(mbbo, "$(DEVICE):POL_SP")
-{
-    field(DESC, "Polarity Select")
-    field(DTYP, "Soft Channel")
-    field(ZRST, "Positive")
-    field(ONST, "Negative") 
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(VAL,  "0")
-    field(FLNK, "$(DEVICE):POL_FANOUT")
-}
+# record(mbbo, "$(DEVICE):POL_SP")
+# {
+#     field(DESC, "Polarity Select")
+#     field(DTYP, "Soft Channel")
+#     field(ZRST, "Positive")
+#     field(ONST, "Negative") 
+#     field(ZRVL, "0")
+#     field(ONVL, "1")
+#     field(VAL,  "0")
+#     field(FLNK, "$(DEVICE):POL_FANOUT")
+# }
 
-record(fanout, "$(DEVICE):POL_FANOUT")
-{
-    field(DESC, "Polarity Fanout")
-    field(LNK1, "$(DEVICE):POL_POS")
-    field(LNK2, "$(DEVICE):POL_NEG")
-    field(SELM, "Specified")
-    field(SELL, "$(DEVICE):POL_SP")
-}
+# record(fanout, "$(DEVICE):POL_FANOUT")
+# {
+#     field(DESC, "Polarity Fanout")
+#     field(LNK1, "$(DEVICE):POL_POS")
+#     field(LNK2, "$(DEVICE):POL_NEG")
+#     field(SELM, "Specified")
+#     field(SELL, "$(DEVICE):POL_SP")
+# }
 
-record(bo, "$(DEVICE):POL_POS")
-{
-    field(DESC, "Set Positive Polarity")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto set_pol_normal $(PORT)")
-}
+# record(bo, "$(DEVICE):POL_POS")
+# {
+#     field(DESC, "Set Positive Polarity")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto set_pol_normal($(ADDR)) $(PORT)")
+# }
 
-record(bo, "$(DEVICE):POL_NEG") 
-{
-    field(DESC, "Set Negative Polarity")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto set_pol_reverse $(PORT)")
-}
+# record(bo, "$(DEVICE):POL_NEG") 
+# {
+#     field(DESC, "Set Negative Polarity")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto set_pol_reverse($(ADDR)) $(PORT)")
+# }
 
 ################################################################################
 # Status Monitoring
 ################################################################################
 
-record(stringin, "$(DEVICE):STATUS")
-{
-    field(DESC, "Status String")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_status $(PORT)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-}
+# record(stringin, "$(DEVICE):STATUS")
+# {
+#     field(DESC, "Status String")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_status($(ADDR)) $(PORT)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+# }
 
 # Individual status bits (derived from status string)
-record(calc, "$(DEVICE):MAIN_PWR_ON")
-{
-    field(DESC, "Main Power ON")
-    field(CALC, "A>0")  # Simplified check
-    field(INPA, "$(DEVICE):STATUS.SEVR")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-}
+# record(calc, "$(DEVICE):MAIN_PWR_ON")
+# {
+#     field(DESC, "Main Power ON")
+#     field(CALC, "A>0")  # Simplified check
+#     field(INPA, "$(DEVICE):STATUS.SEVR")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+# }
 
-record(calc, "$(DEVICE):POL_NORMAL")
-{
-    field(DESC, "Polarity Normal")
-    field(CALC, "A>0")  # Simplified check
-    field(INPA, "$(DEVICE):POL_RB.SEVR")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-}
+# record(calc, "$(DEVICE):POL_NORMAL")
+# {
+#     field(DESC, "Polarity Normal")
+#     field(CALC, "A>0")  # Simplified check
+#     field(INPA, "$(DEVICE):POL_RB.SEVR")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+# }
 
-record(calc, "$(DEVICE):POL_REVERSED")
-{
-    field(DESC, "Polarity Reversed")
-    field(CALC, "!A")  # Simplified check
-    field(INPA, "$(DEVICE):POL_NORMAL")  
-    field(SCAN, "$(SCAN_FAST=1 second)")
-}
+# record(calc, "$(DEVICE):POL_REVERSED")
+# {
+#     field(DESC, "Polarity Reversed")
+#     field(CALC, "!A")  # Simplified check
+#     field(INPA, "$(DEVICE):POL_NORMAL")  
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+# }
 
 ################################################################################
 # Internal Power Supply Monitoring
 ################################################################################
 
-record(ai, "$(DEVICE):P15V_RB")
-{
-    field(DESC, "+15V Supply")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_p15v $(PORT)")
-    field(EGU,  "V")
-    field(PREC, "1")
-    field(SCAN, "$(SCAN_SLOW=10 second)")
-    # Convert from V*10 to V
-    field(ASLO, "0.1")
-    field(AOFF, "0")
-}
+# record(ai, "$(DEVICE):P15V_RB")
+# {
+#     field(DESC, "+15V Supply")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_p15v($(ADDR)) $(PORT)")
+#     field(EGU,  "V")
+#     field(PREC, "1")
+#     field(SCAN, "$(SCAN_SLOW=10 second)")
+#     # Convert from V*10 to V
+#     field(ASLO, "0.1")
+#     field(AOFF, "0")
+# }
 
-record(ai, "$(DEVICE):M15V_RB")
-{
-    field(DESC, "-15V Supply")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_m15v $(PORT)")
-    field(EGU,  "V")
-    field(PREC, "1")
-    field(SCAN, "$(SCAN_SLOW=10 second)")
-    # Convert from V*10 to V
-    field(ASLO, "0.1")
-    field(AOFF, "0")
-}
+# record(ai, "$(DEVICE):M15V_RB")
+# {
+#     field(DESC, "-15V Supply")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_m15v($(ADDR)) $(PORT)")
+#     field(EGU,  "V")
+#     field(PREC, "1")
+#     field(SCAN, "$(SCAN_SLOW=10 second)")
+#     # Convert from V*10 to V
+#     field(ASLO, "0.1")
+#     field(AOFF, "0")
+# }
 
-record(ai, "$(DEVICE):P5V_RB")
-{
-    field(DESC, "+5V Supply")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_p5v $(PORT)")
-    field(EGU,  "V")
-    field(PREC, "1") 
-    field(SCAN, "$(SCAN_SLOW=10 second)")
-    # Convert from V*10 to V
-    field(ASLO, "0.1")
-    field(AOFF, "0")
-}
+# record(ai, "$(DEVICE):P5V_RB")
+# {
+#     field(DESC, "+5V Supply")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_p5v($(ADDR)) $(PORT)")
+#     field(EGU,  "V")
+#     field(PREC, "1") 
+#     field(SCAN, "$(SCAN_SLOW=10 second)")
+#     # Convert from V*10 to V
+#     field(ASLO, "0.1")
+#     field(AOFF, "0")
+# }
 
-record(ai, "$(DEVICE):TEMP_DELTA_RB")
-{
-    field(DESC, "Temperature Delta")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_temp_delta $(PORT)")
-    field(EGU,  "°C")
-    field(PREC, "1")
-    field(SCAN, "$(SCAN_SLOW=10 second)")
-    # Convert from Deg.C*10 to Deg.C (includes sign)
-    field(ASLO, "0.1")
-    field(AOFF, "0")
-}
+# record(ai, "$(DEVICE):TEMP_DELTA_RB")
+# {
+#     field(DESC, "Temperature Delta")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_temp_delta($(ADDR)) $(PORT)")
+#     field(EGU,  "°C")
+#     field(PREC, "1")
+#     field(SCAN, "$(SCAN_SLOW=10 second)")
+#     # Convert from Deg.C*10 to Deg.C (includes sign)
+#     field(ASLO, "0.1")
+#     field(AOFF, "0")
+# }
 
-record(ai, "$(DEVICE):VCE_RB")
-{
-    field(DESC, "Transistor Bank Vce")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_vce $(PORT)")
-    field(EGU,  "V")
-    field(PREC, "1")
-    field(SCAN, "$(SCAN_SLOW=10 second)")
-}
+# record(ai, "$(DEVICE):VCE_RB")
+# {
+#     field(DESC, "Transistor Bank Vce")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_vce($(ADDR)) $(PORT)")
+#     field(EGU,  "V")
+#     field(PREC, "1")
+#     field(SCAN, "$(SCAN_SLOW=10 second)")
+# }
 
 ################################################################################
 # Tesla Field Reading (if equipped)
 ################################################################################
 
-record(ai, "$(DEVICE):TESLA_RB")
-{
-    field(DESC, "Tesla Field")
-    field(DTYP, "stream")
-    field(INP,  "@danfysik.proto get_tesla $(PORT)")
-    field(EGU,  "T")
-    field(PREC, "2")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-    # Convert from T*100 to T
-    field(ASLO, "0.01")
-    field(AOFF, "0")
-}
+# record(ai, "$(DEVICE):TESLA_RB")
+# {
+#     field(DESC, "Tesla Field")
+#     field(DTYP, "stream")
+#     field(INP,  "@danfysik.proto get_tesla($(ADDR)) $(PORT)")
+#     field(EGU,  "T")
+#     field(PREC, "2")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+#     # Convert from T*100 to T
+#     field(ASLO, "0.01")
+#     field(AOFF, "0")
+# }
 
 ################################################################################
 # Communication Control
 ################################################################################
 
-record(bo, "$(DEVICE):INIT_REMOTE")
-{
-    field(DESC, "Initialize Remote Control")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto init_remote $(PORT)")
-    field(ZNAM, "Initialize")
-    field(ONAM, "Initialize")
-    field(VAL,  "0")
-    field(PINI, "YES")
-}
+# record(bo, "$(DEVICE):INIT_REMOTE")
+# {
+#     field(DESC, "Initialize Remote Control")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto init_remote($(ADDR)) $(PORT)")
+#     field(ZNAM, "Initialize")
+#     field(ONAM, "Initialize")
+#     field(VAL,  "0")
+#     field(PINI, "YES")
+# }
 
-record(bo, "$(DEVICE):ERROR_TEXT")
-{
-    field(DESC, "Enable Text Error Messages")
-    field(DTYP, "stream")  
-    field(OUT,  "@danfysik.proto error_text $(PORT)")
-    field(ZNAM, "Enable")
-    field(ONAM, "Enable")
-    field(VAL,  "0")
-    field(PINI, "YES")
-}
+# record(bo, "$(DEVICE):ERROR_TEXT")
+# {
+#     field(DESC, "Enable Text Error Messages")
+#     field(DTYP, "stream")  
+#     field(OUT,  "@danfysik.proto error_text($(ADDR)) $(PORT)")
+#     field(ZNAM, "Enable")
+#     field(ONAM, "Enable")
+#     field(VAL,  "0")
+#     field(PINI, "YES")
+# }
 
 ################################################################################
 # Alarms and Limits 
 ################################################################################
 
 # Current limits
-record(ai, "$(DEVICE):I_HIHI")
-{
-    field(DESC, "Current High-High Limit")
-    field(VAL,  "$(IMAX)")
-    field(EGU,  "A")
-    field(PREC, "$(PREC=3)")
-}
+# record(ai, "$(DEVICE):I_HIHI")
+# {
+#     field(DESC, "Current High-High Limit")
+#     field(VAL,  "$(IMAX)")
+#     field(EGU,  "A")
+#     field(PREC, "$(PREC=3)")
+# }
 
-record(calc, "$(DEVICE):I_HIGH")
-{
-    field(DESC, "Current High Limit")  
-    field(CALC, "0.95*A")
-    field(INPA, "$(IMAX)")
-    field(EGU,  "A")
-    field(PREC, "$(PREC=3)")
-}
+# record(calc, "$(DEVICE):I_HIGH")
+# {
+#     field(DESC, "Current High Limit")  
+#     field(CALC, "0.95*A")
+#     field(INPA, "$(IMAX)")
+#     field(EGU,  "A")
+#     field(PREC, "$(PREC=3)")
+# }
 
 # Add limits to current readback
-record(calc, "$(DEVICE):I_RB_ALARM")
-{
-    field(DESC, "Current with Alarms")
-    field(CALC, "A")
-    field(INPA, "$(DEVICE):I_RB")
-    field(EGU,  "A")
-    field(PREC, "$(PREC=3)")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-    field(HIHI, "$(IMAX)")
-    field(HIGH, "95")
-    field(HHSV, "MAJOR")
-    field(HSV,  "MINOR")
-}
+# record(calc, "$(DEVICE):I_RB_ALARM")
+# {
+#     field(DESC, "Current with Alarms")
+#     field(CALC, "A")
+#     field(INPA, "$(DEVICE):I_RB")
+#     field(EGU,  "A")
+#     field(PREC, "$(PREC=3)")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+#     field(HIHI, "$(IMAX)")
+#     field(HIGH, "95")
+#     field(HHSV, "MAJOR")
+#     field(HSV,  "MINOR")
+# }
 
 ################################################################################
 # Sequencer Support
 ################################################################################
 
-record(longout, "$(DEVICE):SEQ_TRIGGER")
-{
-    field(DESC, "Trigger Sequence")
-    field(DTYP, "stream")
-    field(OUT,  "@danfysik.proto trigger_seq $(PORT)")
-    field(DRVL, "0")
-    field(DRVH, "3")
-}
+# record(longout, "$(DEVICE):SEQ_TRIGGER")
+# {
+#     field(DESC, "Trigger Sequence")
+#     field(DTYP, "stream")
+#     field(OUT,  "@danfysik.proto trigger_seq($(ADDR)) $(PORT)")
+#     field(DRVL, "0")
+#     field(DRVH, "3")
+# }
 
 ################################################################################
 # Heartbeat and Connectivity
 ################################################################################
 
-record(calc, "$(DEVICE):CONNECTED")
-{
-    field(DESC, "Connection Status")
-    field(CALC, "A>0")
-    field(INPA, "$(DEVICE):I_RB.STAT")
-    field(SCAN, "$(SCAN_FAST=1 second)")
-}
+# record(calc, "$(DEVICE):CONNECTED")
+# {
+#     field(DESC, "Connection Status")
+#     field(CALC, "A>0")
+#     field(INPA, "$(DEVICE):I_RB.STAT")
+#     field(SCAN, "$(SCAN_FAST=1 second)")
+# }

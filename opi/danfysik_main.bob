@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
   <name>Danfysik SYS8X00 Power Supply</name>
-  <macros>
-    <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
-  </macros>
   <width>1200</width>
   <height>800</height>
   <background_color>

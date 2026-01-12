@@ -47,34 +47,6 @@ def query_version_serial(port, baudrate=9600, timeout=2.0, addr=None):
         print(f"Serial communication error: {e}")
         return None
 
-def scan_addresses(connection_type, connection_params, timeout=2.0):
-    """Scan a range of addresses to find responding power supplies"""
-    responding_addrs = []
-    
-    if connection_type == 'serial':
-        port, baudrate = connection_params
-        for addr in range(64):  # 0-63
-            print(f"Testing address {addr:02d}...", end=' ', flush=True)
-            response = query_version_serial(port, baudrate, timeout, addr)
-            if response:
-                print(f"✓ (Response: {response})")
-                responding_addrs.append((addr, response))
-            else:
-                print("✗")
-    
-    elif connection_type == 'tcp':
-        host, port_num = connection_params
-        for addr in range(64):  # 0-63
-            print(f"Testing address {addr:02d}...", end=' ', flush=True)
-            response = query_version_tcp(host, port_num, timeout, addr)
-            if response:
-                print(f"✓ (Response: {response})")
-                responding_addrs.append((addr, response))
-            else:
-                print("✗")
-    
-    return responding_addrs
-
 def query_version_tcp(host, port_num, timeout=2.0, addr=None):
     """Query version via TCP/IP connection"""
     import socket

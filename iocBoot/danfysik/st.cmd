@@ -40,7 +40,7 @@ epicsEnvSet("PS_PORT", "4005")                      # TCP port number
 #asynSetOption("DANFYSIK_PORT", -1, "crtscts", "$(FLOW_CONTROL=N)")
 
 # Create TCP/IP port driver  
-drvAsynIPPortConfigure("DANFYSIK_PORT", "$(PS_IP):$(PS_PORT)", 0, 0, 0)
+drvAsynIPPortConfigure("DANFYSIK_PORT", "$(PS_IP):$(PS_PORT)", 0, 0, 1)
 
 #===============================================================================
 # OPTION 3: RS-485/RS-422 via Serial-to-Ethernet Converter
@@ -67,12 +67,12 @@ drvAsynIPPortConfigure("DANFYSIK_PORT", "$(PS_IP):$(PS_PORT)", 0, 0, 0)
 # Load databases for each power supply device
 
 # QUATM002
-epicsEnvSet("DEVICE_QUATM002", "$(DEVICE_PREFIX):QUATM002")
-epicsEnvSet("ADDR_QUATM002", "10")
-epicsEnvSet("IMAX_QUATM002", "100.0")
-epicsEnvSet("VMAX_QUATM002", "25.0")
-dbLoadRecords("$(TOP)/db/danfysik.template", "DEVICE=$(DEVICE_QUATM002),PORT=DANFYSIK_PORT,ADDR=$(ADDR_QUATM002),IMAX=$(IMAX_QUATM002),VMAX=$(VMAX_QUATM002),PREC=3")
-dbLoadRecords("$(TOP)/db/danfysik_unimag.template", "DEVICE=$(DEVICE_QUATM002),IMAX=$(IMAX_QUATM002)")
+# epicsEnvSet("DEVICE_QUATM002", "$(DEVICE_PREFIX):QUATM002")
+# epicsEnvSet("ADDR_QUATM002", "10")
+# epicsEnvSet("IMAX_QUATM002", "100.0")
+# epicsEnvSet("VMAX_QUATM002", "25.0")
+# dbLoadRecords("$(TOP)/db/danfysik.template", "DEVICE=$(DEVICE_QUATM002),PORT=DANFYSIK_PORT,ADDR=$(ADDR_QUATM002),IMAX=$(IMAX_QUATM002),VMAX=$(VMAX_QUATM002),PREC=3")
+# dbLoadRecords("$(TOP)/db/danfysik_unimag.template", "DEVICE=$(DEVICE_QUATM002),IMAX=$(IMAX_QUATM002)")
 
 # QUATM003
 epicsEnvSet("DEVICE_QUATM003", "$(DEVICE_PREFIX):QUATM003")
@@ -80,7 +80,7 @@ epicsEnvSet("ADDR_QUATM003", "11")
 epicsEnvSet("IMAX_QUATM003", "100.0")
 epicsEnvSet("VMAX_QUATM003", "25.0")
 dbLoadRecords("$(TOP)/db/danfysik.template", "DEVICE=$(DEVICE_QUATM003),PORT=DANFYSIK_PORT,ADDR=$(ADDR_QUATM003),IMAX=$(IMAX_QUATM003),VMAX=$(VMAX_QUATM003),PREC=3")
-dbLoadRecords("$(TOP)/db/danfysik_unimag.template", "DEVICE=$(DEVICE_QUATM003),IMAX=$(IMAX_QUATM003)")
+#dbLoadRecords("$(TOP)/db/danfysik_unimag.template", "DEVICE=$(DEVICE_QUATM003),IMAX=$(IMAX_QUATM003)")
 
 # DHRTB101
 # epicsEnvSet("DEVICE_DHRTB101", "$(DEVICE_PREFIX):DHRTB101")
@@ -119,6 +119,9 @@ dbLoadRecords("$(TOP)/db/danfysik_unimag.template", "DEVICE=$(DEVICE_QUATM003),I
 #===============================================================================
 # IOC Initialization
 #===============================================================================
+#asynSetTraceMask("DANFYSIK_PORT", -1, 0x09)
+#asynSetTraceIOMask("DANFYSIK_PORT", -1, 0x02)
+var streamDebug 1
 
 # Initialize the IOC
 iocInit
@@ -131,7 +134,7 @@ iocInit
 
 # Load and start UNIMAG control sequencers for each device
 seq danfysikUnimagControl, "device=$(DEVICE_QUATM002), debug=1"
-seq danfysikUnimagControl, "device=$(DEVICE_QUATM003), debug=1"
+# seq danfysikUnimagControl, "device=$(DEVICE_QUATM003), debug=1"
 # seq danfysikUnimagControl, "device=$(DEVICE_DHRTB101), debug=1"
 
 #===============================================================================
@@ -144,10 +147,10 @@ seq danfysikUnimagControl, "device=$(DEVICE_QUATM003), debug=1"
 epicsThreadSleep 2.0
 
 # Set power supplies to remote mode and enable error reporting
-dbpf "$(DEVICE_QUATM002):INIT_REMOTE" 1
-dbpf "$(DEVICE_QUATM002):ERROR_TEXT" 1
-dbpf "$(DEVICE_QUATM003):INIT_REMOTE" 1
-dbpf "$(DEVICE_QUATM003):ERROR_TEXT" 1
+# dbpf "$(DEVICE_QUATM002):INIT_REMOTE" 1
+# # dbpf "$(DEVICE_QUATM002):ERROR_TEXT" 1
+# dbpf "$(DEVICE_QUATM003):INIT_REMOTE" 1
+# dbpf "$(DEVICE_QUATM003):ERROR_TEXT" 1
 # dbpf "$(DEVICE_DHRTB101):INIT_REMOTE" 1
 # dbpf "$(DEVICE_DHRTB101):ERROR_TEXT" 1
 
