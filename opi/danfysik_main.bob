@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Saved on 2026-01-09 12:00:00 by user-->
 <display version="2.0.0">
   <name>Danfysik SYS8X00 Power Supply</name>
   <macros>
@@ -22,20 +21,18 @@
     <width>400</width>
     <height>30</height>
     <font>
-      <font name="Header 1" family="Liberation Sans" style="BOLD" size="18.0">
+      <font name="Header 1" family="Liberation Sans" style="BOLD" size="22.0">
       </font>
     </font>
     <foreground_color>
-      <color name="Header_ForeGround" red="0" green="0" blue="0">
+      <color name="Header_ForeGround" red="255" green="255" blue="255">
       </color>
     </foreground_color>
     <background_color>
-      <color name="Header_Background" red="255" green="255" blue="255">
+      <color name="Header_Background" red="77" green="77" blue="77">
       </color>
     </background_color>
   </widget>
-  
-  <!-- Device Information Section -->
   <widget type="rectangle" version="2.0.0">
     <name>DeviceInfoFrame</name>
     <x>20</x>
@@ -43,7 +40,7 @@
     <width>560</width>
     <height>120</height>
     <line_color>
-      <color name="Grid" red="90" green="90" blue="90">
+      <color name="Grid" red="128" green="128" blue="128">
       </color>
     </line_color>
     <background_color>
@@ -51,127 +48,72 @@
       </color>
     </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>DeviceInfoTitle</name>
-    <text>Device Information</text>
+    <text>PS $(DEVICE)</text>
     <x>30</x>
     <y>60</y>
-    <width>150</width>
-    <height>20</height>
+    <width>450</width>
     <font>
-      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0">
       </font>
     </font>
   </widget>
-  
-  <widget type="label" version="2.0.0">
-    <name>DeviceLabel</name>
-    <text>Device:</text>
-    <x>30</x>
-    <y>85</y>
-    <width>70</width>
-    <height>20</height>
-  </widget>
-  
-  <widget type="textupdate" version="2.0.0">
-    <name>DeviceName</name>
-    <pv_name>$(DEVICE)</pv_name>
-    <x>100</x>
-    <y>85</y>
-    <width>180</width>
-    <height>20</height>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
-  </widget>
-  
   <widget type="label" version="2.0.0">
     <name>ControlModeLabel</name>
     <text>Control Mode:</text>
-    <x>300</x>
+    <x>30</x>
     <y>85</y>
     <width>90</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>ControlMode</name>
     <pv_name>$(DEVICE):CTRL_MODE</pv_name>
-    <x>390</x>
+    <x>120</x>
     <y>85</y>
     <width>80</width>
-    <height>20</height>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>ConnectionLabel</name>
     <text>Connected:</text>
     <x>480</x>
     <y>85</y>
     <width>70</width>
-    <height>20</height>
   </widget>
-  
   <widget type="led" version="2.0.0">
     <name>ConnectionStatus</name>
     <pv_name>$(DEVICE):CONNECTED</pv_name>
     <x>550</x>
     <y>85</y>
-    <width>20</width>
-    <height>20</height>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>AddressLabel</name>
     <text>Address:</text>
     <x>30</x>
     <y>110</y>
     <width>70</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>Address</name>
     <pv_name>$(DEVICE):ADDR_RB</pv_name>
     <x>100</x>
     <y>110</y>
     <width>50</width>
-    <height>20</height>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>VersionLabel</name>
     <text>Version:</text>
     <x>300</x>
     <y>110</y>
     <width>60</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>Version</name>
     <pv_name>$(DEVICE):VERSION</pv_name>
     <x>360</x>
     <y>110</y>
     <width>200</width>
-    <height>20</height>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
-  <!-- Status Section -->
   <widget type="rectangle" version="2.0.0">
     <name>StatusFrame</name>
     <x>600</x>
@@ -179,7 +121,7 @@
     <width>580</width>
     <height>120</height>
     <line_color>
-      <color name="Grid" red="90" green="90" blue="90">
+      <color name="Grid" red="128" green="128" blue="128">
       </color>
     </line_color>
     <background_color>
@@ -187,54 +129,41 @@
       </color>
     </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>StatusTitle</name>
     <text>Status</text>
     <x>610</x>
     <y>60</y>
-    <width>100</width>
-    <height>20</height>
     <font>
-      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0">
       </font>
     </font>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>MainPowerLabel</name>
     <text>Main Power:</text>
     <x>610</x>
     <y>85</y>
     <width>80</width>
-    <height>20</height>
   </widget>
-  
   <widget type="led" version="2.0.0">
     <name>MainPowerLed</name>
     <pv_name>$(DEVICE):MAIN_PWR_ON</pv_name>
     <x>690</x>
     <y>85</y>
-    <width>20</width>
-    <height>20</height>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>InterlockLabel</name>
     <text>Interlocked:</text>
     <x>720</x>
     <y>85</y>
     <width>80</width>
-    <height>20</height>
   </widget>
-  
   <widget type="led" version="2.0.0">
     <name>InterlockLed</name>
     <pv_name>$(DEVICE):UNIMAG:INTERLOCKED</pv_name>
     <x>800</x>
     <y>85</y>
-    <width>20</width>
-    <height>20</height>
     <off_color>
       <color name="OK" red="0" green="255" blue="0">
       </color>
@@ -244,34 +173,20 @@
       </color>
     </on_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>StatusStringLabel</name>
     <text>Status String:</text>
     <x>610</x>
     <y>110</y>
     <width>90</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>StatusString</name>
     <pv_name>$(DEVICE):STATUS</pv_name>
     <x>700</x>
     <y>110</y>
     <width>470</width>
-    <height>20</height>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
-    <font>
-      <font name="Default" family="Liberation Mono" style="REGULAR" size="11.0">
-      </font>
-    </font>
   </widget>
-  
-  <!-- Main Control Section -->
   <widget type="rectangle" version="2.0.0">
     <name>ControlFrame</name>
     <x>20</x>
@@ -279,119 +194,101 @@
     <width>560</width>
     <height>180</height>
     <line_color>
-      <color name="Grid" red="90" green="90" blue="90">
+      <color name="Grid" red="128" green="128" blue="128">
       </color>
     </line_color>
     <background_color>
-      <color name="Write_Background" red="255" green="255" blue="180">
+      <color name="Write_Background" red="128" green="255" blue="255">
       </color>
     </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>ControlTitle</name>
     <text>Main Control</text>
     <x>30</x>
     <y>195</y>
     <width>150</width>
-    <height>20</height>
     <font>
-      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0">
       </font>
     </font>
   </widget>
-  
   <widget type="bool_button" version="2.0.0">
     <name>PowerButton</name>
     <pv_name>$(DEVICE):POWER_SP</pv_name>
     <x>30</x>
     <y>220</y>
-    <width>100</width>
-    <height>30</height>
     <off_label>Power OFF</off_label>
-    <on_label>Power ON</on_label>
     <off_color>
-      <color name="STOP" red="255" green="60" blue="60">
+      <color name="STOP" red="255" green="0" blue="0">
       </color>
     </off_color>
+    <on_label>Power ON</on_label>
     <on_color>
       <color name="OK" red="0" green="255" blue="0">
       </color>
     </on_color>
   </widget>
-  
   <widget type="action_button" version="3.0.0">
     <name>ResetButton</name>
     <actions>
       <action type="write_pv">
+        <description>Reset Interlocks</description>
         <pv_name>$(DEVICE):RESET</pv_name>
         <value>1</value>
-        <description>Reset Interlocks</description>
       </action>
     </actions>
     <text>RESET</text>
     <x>140</x>
     <y>220</y>
     <width>80</width>
-    <height>30</height>
     <background_color>
-      <color name="MINOR" red="255" green="255" blue="0">
+      <color name="MINOR" red="255" green="128" blue="0">
       </color>
     </background_color>
+    <tooltip>$(actions)</tooltip>
   </widget>
-  
   <widget type="action_button" version="3.0.0">
     <name>GlobalOffButton</name>
     <actions>
       <action type="write_pv">
+        <description>Global Soft Shutdown</description>
         <pv_name>$(DEVICE):GOFF</pv_name>
         <value>1</value>
-        <description>Global Soft Shutdown</description>
       </action>
     </actions>
     <text>GLOBAL OFF</text>
     <x>230</x>
     <y>220</y>
-    <width>100</width>
-    <height>30</height>
     <background_color>
       <color name="MAJOR" red="255" green="0" blue="0">
       </color>
     </background_color>
+    <tooltip>$(actions)</tooltip>
   </widget>
-  
   <widget type="bool_button" version="2.0.0">
     <name>RemoteButton</name>
     <pv_name>$(DEVICE):REMOTE</pv_name>
     <x>340</x>
     <y>220</y>
-    <width>100</width>
-    <height>30</height>
     <off_label>LOCAL</off_label>
     <on_label>REMOTE</on_label>
   </widget>
-  
   <widget type="bool_button" version="2.0.0">
     <name>RemoteLockButton</name>
     <pv_name>$(DEVICE):RLOCK</pv_name>
     <x>450</x>
     <y>220</y>
-    <width>100</width>
-    <height>30</height>
     <off_label>UNLOCKED</off_label>
     <on_label>LOCKED</on_label>
   </widget>
-  
-  <!-- Polarity Control -->
   <widget type="label" version="2.0.0">
     <name>PolarityLabel</name>
     <text>Polarity:</text>
     <x>30</x>
     <y>265</y>
     <width>70</width>
-    <height>20</height>
   </widget>
-  
   <widget type="choice" version="2.0.0">
     <name>PolarityChoice</name>
     <pv_name>$(DEVICE):POL_SP</pv_name>
@@ -399,26 +296,22 @@
     <y>265</y>
     <width>120</width>
     <height>20</height>
+    <items>
+      <item>Item 1</item>
+      <item>Item 2</item>
+    </items>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>PolarityReadback</name>
     <pv_name>$(DEVICE):POL_RB</pv_name>
     <x>230</x>
     <y>265</y>
     <width>30</width>
-    <height>20</height>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
     <font>
       <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0">
       </font>
     </font>
   </widget>
-  
-  <!-- Current Control Section -->
   <widget type="rectangle" version="2.0.0">
     <name>CurrentFrame</name>
     <x>600</x>
@@ -426,37 +319,32 @@
     <width>580</width>
     <height>180</height>
     <line_color>
-      <color name="Grid" red="90" green="90" blue="90">
+      <color name="Grid" red="128" green="128" blue="128">
       </color>
     </line_color>
     <background_color>
-      <color name="Write_Background" red="255" green="255" blue="180">
+      <color name="Write_Background" red="128" green="255" blue="255">
       </color>
     </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>CurrentTitle</name>
     <text>Current Control</text>
     <x>610</x>
     <y>195</y>
     <width>150</width>
-    <height>20</height>
     <font>
-      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0">
       </font>
     </font>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>CurrentSetpointLabel</name>
     <text>Current Setpoint:</text>
     <x>610</x>
     <y>225</y>
     <width>120</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textentry" version="3.0.0">
     <name>CurrentSetpoint</name>
     <pv_name>$(DEVICE):I_SP</pv_name>
@@ -465,30 +353,21 @@
     <width>120</width>
     <height>22</height>
     <precision>3</precision>
-    <background_color>
-      <color name="Write_Background" red="255" green="255" blue="180">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>CurrentUnits1</name>
     <text>A</text>
     <x>855</x>
     <y>225</y>
     <width>15</width>
-    <height>20</height>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>CurrentReadbackLabel</name>
     <text>Current Readback:</text>
     <x>610</x>
     <y>255</y>
     <width>120</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>CurrentReadback</name>
     <pv_name>$(DEVICE):I_RB</pv_name>
@@ -497,22 +376,15 @@
     <width>120</width>
     <height>22</height>
     <precision>3</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>CurrentUnits2</name>
     <text>A</text>
     <x>855</x>
     <y>255</y>
     <width>15</width>
-    <height>20</height>
   </widget>
-  
-  <widget type="meter" version="2.0.0">
+  <widget type="meter" version="3.0.0">
     <name>CurrentMeter</name>
     <pv_name>$(DEVICE):I_RB</pv_name>
     <x>900</x>
@@ -520,20 +392,15 @@
     <width>80</width>
     <height>80</height>
     <limits_from_pv>false</limits_from_pv>
-    <minimum>0.0</minimum>
     <maximum>400.0</maximum>
-    <show_value>true</show_value>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>VoltageLabel</name>
     <text>Voltage:</text>
     <x>610</x>
     <y>285</y>
     <width>60</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>VoltageReadback</name>
     <pv_name>$(DEVICE):V_RB</pv_name>
@@ -542,22 +409,14 @@
     <width>120</width>
     <height>22</height>
     <precision>2</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>VoltageUnits</name>
     <text>V</text>
     <x>855</x>
     <y>285</y>
     <width>15</width>
-    <height>20</height>
   </widget>
-  
-  <!-- Ramping Control Section -->
   <widget type="rectangle" version="2.0.0">
     <name>RampFrame</name>
     <x>20</x>
@@ -565,131 +424,99 @@
     <width>560</width>
     <height>120</height>
     <line_color>
-      <color name="Grid" red="90" green="90" blue="90">
+      <color name="Grid" red="128" green="128" blue="128">
       </color>
     </line_color>
     <background_color>
-      <color name="Write_Background" red="255" green="255" blue="180">
+      <color name="Write_Background" red="128" green="255" blue="255">
       </color>
     </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>RampTitle</name>
     <text>Ramping Control</text>
     <x>30</x>
     <y>390</y>
     <width>150</width>
-    <height>20</height>
     <font>
-      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0">
       </font>
     </font>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>RampRateLabel</name>
     <text>Ramp Rate:</text>
     <x>30</x>
     <y>420</y>
     <width>80</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textentry" version="3.0.0">
     <name>RampRate</name>
     <pv_name>$(DEVICE):RAMP_RATE_SP</pv_name>
     <x>110</x>
     <y>420</y>
-    <width>100</width>
     <height>22</height>
     <precision>2</precision>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>RampRateUnits</name>
     <text>A/s</text>
     <x>215</x>
     <y>420</y>
     <width>30</width>
-    <height>20</height>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>RampEndLabel</name>
     <text>Ramp End:</text>
     <x>280</x>
     <y>420</y>
     <width>80</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textentry" version="3.0.0">
     <name>RampEnd</name>
     <pv_name>$(DEVICE):RAMP_END_SP</pv_name>
     <x>360</x>
     <y>420</y>
-    <width>100</width>
     <height>22</height>
     <precision>3</precision>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>RampEndUnits</name>
     <text>A</text>
     <x>465</x>
     <y>420</y>
     <width>15</width>
-    <height>20</height>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>RampRateRBLabel</name>
     <text>Rate RB:</text>
     <x>30</x>
     <y>450</y>
     <width>60</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>RampRateRB</name>
     <pv_name>$(DEVICE):RAMP_RATE_RB</pv_name>
     <x>90</x>
     <y>450</y>
     <width>80</width>
-    <height>20</height>
     <precision>2</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>RampEndRBLabel</name>
     <text>End RB:</text>
     <x>200</x>
     <y>450</y>
     <width>60</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>RampEndRB</name>
     <pv_name>$(DEVICE):RAMP_END_RB</pv_name>
     <x>260</x>
     <y>450</y>
     <width>80</width>
-    <height>20</height>
     <precision>3</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
-  <!-- Internal Monitoring Section -->
   <widget type="rectangle" version="2.0.0">
     <name>MonitoringFrame</name>
     <x>600</x>
@@ -697,7 +524,7 @@
     <width>580</width>
     <height>120</height>
     <line_color>
-      <color name="Grid" red="90" green="90" blue="90">
+      <color name="Grid" red="128" green="128" blue="128">
       </color>
     </line_color>
     <background_color>
@@ -705,221 +532,189 @@
       </color>
     </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>MonitoringTitle</name>
     <text>Internal Monitoring</text>
     <x>610</x>
     <y>390</y>
     <width>150</width>
-    <height>20</height>
     <font>
-      <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0">
       </font>
     </font>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>P15VLabel</name>
     <text>+15V:</text>
     <x>610</x>
     <y>420</y>
     <width>40</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>P15V</name>
     <pv_name>$(DEVICE):P15V_RB</pv_name>
     <x>650</x>
     <y>420</y>
     <width>60</width>
-    <height>20</height>
     <precision>1</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>M15VLabel</name>
     <text>-15V:</text>
     <x>720</x>
     <y>420</y>
     <width>40</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>M15V</name>
     <pv_name>$(DEVICE):M15V_RB</pv_name>
     <x>760</x>
     <y>420</y>
     <width>60</width>
-    <height>20</height>
     <precision>1</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>P5VLabel</name>
     <text>+5V:</text>
     <x>830</x>
     <y>420</y>
     <width>35</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>P5V</name>
     <pv_name>$(DEVICE):P5V_RB</pv_name>
     <x>865</x>
     <y>420</y>
     <width>60</width>
-    <height>20</height>
     <precision>1</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>TempLabel</name>
     <text>ΔTemp:</text>
     <x>610</x>
     <y>450</y>
     <width>50</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>TempDelta</name>
     <pv_name>$(DEVICE):TEMP_DELTA_RB</pv_name>
     <x>660</x>
     <y>450</y>
     <width>60</width>
-    <height>20</height>
     <precision>1</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>VceLabel</name>
     <text>Vce:</text>
     <x>730</x>
     <y>450</y>
     <width>30</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>Vce</name>
     <pv_name>$(DEVICE):VCE_RB</pv_name>
     <x>760</x>
     <y>450</y>
     <width>60</width>
-    <height>20</height>
     <precision>1</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>TeslaLabel</name>
     <text>Tesla:</text>
     <x>830</x>
     <y>450</y>
     <width>45</width>
-    <height>20</height>
   </widget>
-  
   <widget type="textupdate" version="2.0.0">
     <name>Tesla</name>
     <pv_name>$(DEVICE):TESLA_RB</pv_name>
     <x>875</x>
     <y>450</y>
     <width>80</width>
-    <height>20</height>
     <precision>2</precision>
-    <background_color>
-      <color name="Read_Background" red="240" green="240" blue="240">
-      </color>
-    </background_color>
   </widget>
-  
-  <!-- Navigation Buttons -->
   <widget type="action_button" version="3.0.0">
     <name>UnimagButton</name>
     <actions>
       <action type="open_display">
+        <description>Open UNIMAG Interface</description>
         <file>danfysik_unimag.bob</file>
         <macros>
           <DEVICE>$(DEVICE)</DEVICE>
         </macros>
         <target>tab</target>
-        <description>Open UNIMAG Interface</description>
       </action>
     </actions>
     <text>UNIMAG Interface</text>
     <x>20</x>
     <y>520</y>
     <width>150</width>
-    <height>30</height>
-    <background_color>
-      <color name="Button_Background" red="210" green="210" blue="210">
-      </color>
-    </background_color>
+    <tooltip>$(actions)</tooltip>
   </widget>
-  
   <widget type="action_button" version="3.0.0">
     <name>ExpertButton</name>
     <actions>
       <action type="open_display">
+        <description>Open Expert Interface</description>
         <file>danfysik_expert.bob</file>
         <macros>
           <DEVICE>$(DEVICE)</DEVICE>
         </macros>
         <target>tab</target>
-        <description>Open Expert Interface</description>
       </action>
     </actions>
     <text>Expert Panel</text>
     <x>180</x>
     <y>520</y>
     <width>120</width>
-    <height>30</height>
-    <background_color>
-      <color name="Button_Background" red="210" green="210" blue="210">
-      </color>
-    </background_color>
+    <tooltip>$(actions)</tooltip>
   </widget>
-  
-  <!-- Current Plot -->
-  <widget type="xyplot" version="2.0.0">
+  <widget type="xyplot" version="3.0.0">
     <name>CurrentPlot</name>
-    <title>Current vs Time</title>
     <x>20</x>
     <y>570</y>
     <width>1160</width>
     <height>200</height>
+    <title>Current vs Time</title>
     <x_axis>
       <title>Time</title>
       <autoscale>true</autoscale>
+      <log_scale>false</log_scale>
+      <minimum>0.0</minimum>
+      <maximum>100.0</maximum>
+      <show_grid>false</show_grid>
+      <title_font>
+        <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </title_font>
+      <scale_font>
+        <font name="Default" family="Liberation Sans" style="REGULAR" size="14.0">
+        </font>
+      </scale_font>
+      <visible>true</visible>
     </x_axis>
     <y_axes>
       <y_axis>
         <title>Current (A)</title>
         <autoscale>true</autoscale>
+        <log_scale>false</log_scale>
+        <minimum>0.0</minimum>
+        <maximum>100.0</maximum>
+        <show_grid>false</show_grid>
+        <title_font>
+          <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0">
+          </font>
+        </title_font>
+        <scale_font>
+          <font name="Default" family="Liberation Sans" style="REGULAR" size="14.0">
+          </font>
+        </scale_font>
+        <on_right>false</on_right>
+        <visible>true</visible>
+        <color>
+          <color name="Text" red="0" green="0" blue="0">
+          </color>
+        </color>
       </y_axis>
     </y_axes>
     <traces>
@@ -927,19 +722,35 @@
         <name>Setpoint</name>
         <x_pv>$(DEVICE):I_SP.TIME</x_pv>
         <y_pv>$(DEVICE):I_SP</y_pv>
+        <err_pv></err_pv>
+        <axis>0</axis>
+        <trace_type>1</trace_type>
         <color>
           <color red="0" green="0" blue="255">
           </color>
         </color>
+        <line_width>1</line_width>
+        <line_style>0</line_style>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
       </trace>
       <trace>
         <name>Readback</name>
         <x_pv>$(DEVICE):I_RB.TIME</x_pv>
         <y_pv>$(DEVICE):I_RB</y_pv>
+        <err_pv></err_pv>
+        <axis>0</axis>
+        <trace_type>1</trace_type>
         <color>
           <color red="255" green="0" blue="0">
           </color>
         </color>
+        <line_width>1</line_width>
+        <line_style>0</line_style>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
       </trace>
     </traces>
   </widget>

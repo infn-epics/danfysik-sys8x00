@@ -83,12 +83,12 @@ dbLoadRecords("$(TOP)/db/danfysik.template", "DEVICE=$(DEVICE_QUATM003),PORT=DAN
 dbLoadRecords("$(TOP)/db/danfysik_unimag.template", "DEVICE=$(DEVICE_QUATM003),IMAX=$(IMAX_QUATM003)")
 
 # DHRTB101
-epicsEnvSet("DEVICE_DHRTB101", "$(DEVICE_PREFIX):DHRTB101")
-epicsEnvSet("ADDR_DHRTB101", "29")
-epicsEnvSet("IMAX_DHRTB101", "100.0")
-epicsEnvSet("VMAX_DHRTB101", "25.0")
-dbLoadRecords("$(TOP)/db/danfysik.template", "DEVICE=$(DEVICE_DHRTB101),PORT=DANFYSIK_PORT,ADDR=$(ADDR_DHRTB101),IMAX=$(IMAX_DHRTB101),VMAX=$(VMAX_DHRTB101),PREC=3")
-dbLoadRecords("$(TOP)/db/danfysik_unimag.template", "DEVICE=$(DEVICE_DHRTB101),IMAX=$(IMAX_DHRTB101)")
+# epicsEnvSet("DEVICE_DHRTB101", "$(DEVICE_PREFIX):DHRTB101")
+# epicsEnvSet("ADDR_DHRTB101", "29")
+# epicsEnvSet("IMAX_DHRTB101", "100.0")
+# epicsEnvSet("VMAX_DHRTB101", "25.0")
+# dbLoadRecords("$(TOP)/db/danfysik.template", "DEVICE=$(DEVICE_DHRTB101),PORT=DANFYSIK_PORT,ADDR=$(ADDR_DHRTB101),IMAX=$(IMAX_DHRTB101),VMAX=$(VMAX_DHRTB101),PREC=3")
+# dbLoadRecords("$(TOP)/db/danfysik_unimag.template", "DEVICE=$(DEVICE_DHRTB101),IMAX=$(IMAX_DHRTB101)")
 
 #===============================================================================
 # Optional: Load autosave/restore functionality
@@ -132,7 +132,7 @@ iocInit
 # Load and start UNIMAG control sequencers for each device
 seq danfysikUnimagControl, "device=$(DEVICE_QUATM002), debug=1"
 seq danfysikUnimagControl, "device=$(DEVICE_QUATM003), debug=1"
-seq danfysikUnimagControl, "device=$(DEVICE_DHRTB101), debug=1"
+# seq danfysikUnimagControl, "device=$(DEVICE_DHRTB101), debug=1"
 
 #===============================================================================
 # Post-initialization setup
@@ -148,8 +148,8 @@ dbpf "$(DEVICE_QUATM002):INIT_REMOTE" 1
 dbpf "$(DEVICE_QUATM002):ERROR_TEXT" 1
 dbpf "$(DEVICE_QUATM003):INIT_REMOTE" 1
 dbpf "$(DEVICE_QUATM003):ERROR_TEXT" 1
-dbpf "$(DEVICE_DHRTB101):INIT_REMOTE" 1
-dbpf "$(DEVICE_DHRTB101):ERROR_TEXT" 1
+# dbpf "$(DEVICE_DHRTB101):INIT_REMOTE" 1
+# dbpf "$(DEVICE_DHRTB101):ERROR_TEXT" 1
 
 # Optional: Set some reasonable defaults
 # dbpf "$(DEVICE_PREFIX):RAMP_RATE_SP" 5.0          # 5 A/s ramp rate
