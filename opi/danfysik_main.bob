@@ -3,7 +3,7 @@
 <display version="2.0.0">
   <name>Danfysik SYS8X00 Power Supply</name>
   <macros>
-    <DEVICE>PS:DANFYSIK:01</DEVICE>
+    <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
   </macros>
   <width>1200</width>
   <height>800</height>
@@ -518,7 +518,7 @@
     <x>900</x>
     <y>220</y>
     <width>80</width>
-    <height>80</width>
+    <height>80</height>
     <limits_from_pv>false</limits_from_pv>
     <minimum>0.0</minimum>
     <maximum>400.0</maximum>

@@ -406,24 +406,24 @@ record(stringin, "$(DEVICE):STATUS")
 record(calc, "$(DEVICE):MAIN_PWR_ON")
 {
     field(DESC, "Main Power ON")
-    field(CALC, "A[0]!=33")  # Check if first char is not '!' (ASCII 33)
-    field(INPA, "$(DEVICE):STATUS")
+    field(CALC, "A>0")  # Simplified check
+    field(INPA, "$(DEVICE):STATUS.SEVR")
     field(SCAN, "$(SCAN_FAST=1 second)")
 }
 
 record(calc, "$(DEVICE):POL_NORMAL")
 {
     field(DESC, "Polarity Normal")
-    field(CALC, "A[1]!=33")  # Check if second char is not '!'
-    field(INPA, "$(DEVICE):STATUS")
+    field(CALC, "A>0")  # Simplified check
+    field(INPA, "$(DEVICE):POL_RB.SEVR")
     field(SCAN, "$(SCAN_FAST=1 second)")
 }
 
 record(calc, "$(DEVICE):POL_REVERSED")
 {
     field(DESC, "Polarity Reversed")
-    field(CALC, "A[2]!=33")  # Check if third char is not '!'
-    field(INPA, "$(DEVICE):STATUS")  
+    field(CALC, "!A")  # Simplified check
+    field(INPA, "$(DEVICE):POL_NORMAL")  
     field(SCAN, "$(SCAN_FAST=1 second)")
 }
 
@@ -549,18 +549,17 @@ record(ai, "$(DEVICE):I_HIHI")
     field(PREC, "$(PREC=3)")
 }
 
-record(ai, "$(DEVICE):I_HIGH")
+record(calc, "$(DEVICE):I_HIGH")
 {
     field(DESC, "Current High Limit")  
-    field(VAL,  "$(IMAX=100)")
     field(CALC, "0.95*A")
-    field(INPA, "$(DEVICE):I_HIHI")
+    field(INPA, "$(IMAX)")
     field(EGU,  "A")
     field(PREC, "$(PREC=3)")
 }
 
 # Add limits to current readback
-record(ai, "$(DEVICE):I_RB_ALARM")
+record(calc, "$(DEVICE):I_RB_ALARM")
 {
     field(DESC, "Current with Alarms")
     field(CALC, "A")
@@ -569,7 +568,7 @@ record(ai, "$(DEVICE):I_RB_ALARM")
     field(PREC, "$(PREC=3)")
     field(SCAN, "$(SCAN_FAST=1 second)")
     field(HIHI, "$(IMAX)")
-    field(HIGH, "$(IMAX=100)*0.95")
+    field(HIGH, "95")
     field(HHSV, "MAJOR")
     field(HSV,  "MINOR")
 }
@@ -597,6 +596,4 @@ record(calc, "$(DEVICE):CONNECTED")
     field(CALC, "A>0")
     field(INPA, "$(DEVICE):I_RB.STAT")
     field(SCAN, "$(SCAN_FAST=1 second)")
-    field(ZNAM, "Disconnected")
-    field(ONAM, "Connected")
 }

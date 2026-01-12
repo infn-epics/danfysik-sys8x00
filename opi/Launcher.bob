@@ -46,7 +46,7 @@
     <x>20</x>
     <y>80</y>
     <width>560</width>
-    <height>300</width>
+    <height>300</height>
     <line_color>
       <color name="Grid" red="90" green="90" blue="90">
       </color>
@@ -60,7 +60,7 @@
   <!-- Power Supply 1 -->
   <widget type="label" version="2.0.0">
     <name>PS1Label</name>
-    <text>PS:DANFYSIK:01 - Main Dipole</text>
+    <text>BTF:MAG:DANFYSIK:QUATM002 - Main Dipole</text>
     <x>30</x>
     <y>100</y>
     <width>200</width>
@@ -77,7 +77,7 @@
       <action type="open_display">
         <file>danfysik_main.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:01</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open Main Control Panel</description>
@@ -100,7 +100,7 @@
       <action type="open_display">
         <file>danfysik_unimag.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:01</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open UNIMAG Interface</description>
@@ -123,7 +123,7 @@
       <action type="open_display">
         <file>danfysik_expert.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:01</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open Expert Panel</description>
@@ -143,7 +143,7 @@
   <!-- Power Supply 2 -->
   <widget type="label" version="2.0.0">
     <name>PS2Label</name>
-    <text>PS:DANFYSIK:02 - Quadrupole</text>
+    <text>BTF:MAG:DANFYSIK:QUATM003 - Quadrupole</text>
     <x>30</x>
     <y>140</y>
     <width>200</width>
@@ -160,7 +160,7 @@
       <action type="open_display">
         <file>danfysik_main.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:02</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:QUATM003</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open Main Control Panel</description>
@@ -183,7 +183,7 @@
       <action type="open_display">
         <file>danfysik_unimag.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:02</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:QUATM003</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open UNIMAG Interface</description>
@@ -206,7 +206,7 @@
       <action type="open_display">
         <file>danfysik_expert.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:02</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:QUATM003</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open Expert Panel</description>
@@ -220,13 +220,13 @@
     <background_color>
       <color name="MINOR" red="255" green="255" blue="0">
       </color>
-    </background_background>
+    </background_color>
   </widget>
   
   <!-- Power Supply 3 -->
   <widget type="label" version="2.0.0">
     <name>PS3Label</name>
-    <text>PS:DANFYSIK:03 - Sextupole</text>
+    <text>BTF:MAG:DANFYSIK:DHRTB101 - Sextupole</text>
     <x>30</x>
     <y>180</y>
     <width>200</width>
@@ -243,7 +243,7 @@
       <action type="open_display">
         <file>danfysik_main.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:03</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:DHRTB101</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open Main Control Panel</description>
@@ -266,7 +266,7 @@
       <action type="open_display">
         <file>danfysik_unimag.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:03</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:DHRTB101</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open UNIMAG Interface</description>
@@ -289,7 +289,7 @@
       <action type="open_display">
         <file>danfysik_expert.bob</file>
         <macros>
-          <DEVICE>PS:DANFYSIK:03</DEVICE>
+          <DEVICE>BTF:MAG:DANFYSIK:DHRTB101</DEVICE>
         </macros>
         <target>tab</target>
         <description>Open Expert Panel</description>
@@ -312,7 +312,7 @@
     <x>20</x>
     <y>240</y>
     <width>560</width>
-    <height>80</width>
+    <height>80</height>
     <line_color>
       <color name="Grid" red="90" green="90" blue="90">
       </color>
@@ -342,7 +342,7 @@
     <x>30</x>
     <y>270</y>
     <width>520</width>
-    <height>15</width>
+    <height>15</height>
   </widget>
   
   <widget type="label" version="2.0.0">
@@ -351,7 +351,7 @@
     <x>30</x>
     <y>285</y>
     <width>520</width>
-    <height>15</width>
+    <height>15</height>
   </widget>
   
   <widget type="label" version="2.0.0">
@@ -360,7 +360,7 @@
     <x>30</x>
     <y>300</y>
     <width>520</width>
-    <height>15</width>
+    <height>15</height>
   </widget>
   
   <!-- System Information -->
@@ -369,7 +369,7 @@
     <x>20</x>
     <y>330</y>
     <width>560</width>
-    <height>60</width>
+    <height>60</height>
     <line_color>
       <color name="Grid" red="90" green="90" blue="90">
       </color>
@@ -399,7 +399,7 @@
     <x>30</x>
     <y>360</y>
     <width>520</width>
-    <height>15</width>
+    <height>15</height>
     <font>
       <font name="Default" family="Liberation Sans" style="REGULAR" size="10.0">
       </font>
@@ -419,7 +419,7 @@
     <x>20</x>
     <y>410</y>
     <width>120</width>
-    <height>30</width>
+    <height>30</height>
     <background_color>
       <color name="Button_Background" red="210" green="210" blue="210">
       </color>
@@ -458,7 +458,7 @@
     <x>500</x>
     <y>410</y>
     <width>80</width>
-    <height>30</width>
+    <height>30</height>
     <background_color>
       <color name="STOP" red="255" green="60" blue="60">
       </color>

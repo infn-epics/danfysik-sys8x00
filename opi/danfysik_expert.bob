@@ -3,7 +3,7 @@
 <display version="2.0.0">
   <name>Danfysik Expert Panel</name>
   <macros>
-    <DEVICE>PS:DANFYSIK:01</DEVICE>
+    <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
   </macros>
   <width>1000</width>
   <height>700</height>
@@ -214,7 +214,7 @@
     <x>180</x>
     <y>150</y>
     <width>100</width>
-    <height>20</width>
+    <height>20</height>
     <precision>3</precision>
   </widget>
   
@@ -233,7 +233,7 @@
     <x>330</x>
     <y>150</y>
     <width>100</width>
-    <height>20</width>
+    <height>20</height>
     <precision>2</precision>
   </widget>
   
@@ -262,7 +262,7 @@
     <x>20</x>
     <y>250</y>
     <width>480</width>
-    <height>200</width>
+    <height>200</height>
     <line_color>
       <color name="Grid" red="90" green="90" blue="90">
       </color>
@@ -348,7 +348,7 @@
     <x>130</x>
     <y>315</y>
     <width>80</width>
-    <height>20</width>
+    <height>20</height>
     <precision>2</precision>
     <background_color>
       <color name="Read_Background" red="240" green="240" blue="240">
@@ -371,7 +371,7 @@
     <x>330</x>
     <y>315</y>
     <width>80</width>
-    <height>20</width>
+    <height>20</height>
     <precision>1</precision>
     <background_color>
       <color name="Read_Background" red="240" green="240" blue="240">
@@ -394,7 +394,7 @@
     <x>130</x>
     <y>340</y>
     <width>80</width>
-    <height>20</width>
+    <height>20</height>
     <precision>1</precision>
     <background_color>
       <color name="Read_Background" red="240" green="240" blue="240">
@@ -500,7 +500,7 @@
     <x>520</x>
     <y>250</y>
     <width>460</width>
-    <height>200</width>
+    <height>200</height>
     <line_color>
       <color name="Grid" red="90" green="90" blue="90">
       </color>
@@ -539,7 +539,7 @@
     <x>610</x>
     <y>290</y>
     <width>360</width>
-    <height>20</width>
+    <height>20</height>
     <background_color>
       <color name="Read_Background" red="240" green="240" blue="240">
       </color>
@@ -557,7 +557,7 @@
     <x>530</x>
     <y>320</y>
     <width>80</width>
-    <height>20</width>
+    <height>20</height>
   </widget>
   
   <widget type="label" version="2.0.0">
@@ -611,7 +611,7 @@
     <x>660</x>
     <y>345</y>
     <width>15</width>
-    <height>15</width>
+    <height>15</height>
   </widget>
   
   <!-- UNIMAG Debug Section -->
@@ -620,7 +620,7 @@
     <x>20</x>
     <y>470</y>
     <width>960</width>
-    <height>150</width>
+    <height>150</height>
     <line_color>
       <color name="Grid" red="90" green="90" blue="90">
       </color>
@@ -637,7 +637,7 @@
     <x>30</x>
     <y>480</y>
     <width>200</width>
-    <height>20</width>
+    <height>20</height>
     <font>
       <font name="Header 2" family="Liberation Sans" style="BOLD" size="14.0">
       </font>
@@ -660,7 +660,7 @@
     <x>80</x>
     <y>510</y>
     <width>100</width>
-    <height>20</width>
+    <height>20</height>
     <background_color>
       <color name="Read_Background" red="240" green="255" blue="240">
       </color>
@@ -682,7 +682,7 @@
     <x>270</x>
     <y>510</y>
     <width>100</width>
-    <height>20</width>
+    <height>20</height>
     <background_color>
       <color name="Read_Background" red="240" green="255" blue="240">
       </color>
@@ -704,7 +704,7 @@
     <x>460</x>
     <y>510</y>
     <width>80</width>
-    <height>20</width>
+    <height>20</height>
     <background_color>
       <color name="Read_Background" red="240" green="255" blue="240">
       </color>
@@ -726,7 +726,7 @@
     <x>620</x>
     <y>510</y>
     <width>80</width>
-    <height>20</width>
+    <height>20</height>
     <precision>3</precision>
     <background_color>
       <color name="Read_Background" red="240" green="255" blue="240">

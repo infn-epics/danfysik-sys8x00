@@ -7,9 +7,9 @@
 # UNIMAG Current Setpoint - User Interface
 ################################################################################
 # User sets current in A (positive or negative)
-# PV format: $(DEVICE):UNIMAG:CURRENT_SP
+# PV format: $(DEVICE):CURRENT_SP
 # Monitored by SNL program for automatic sequencing
-record(ao, "$(DEVICE):UNIMAG:CURRENT_SP")
+record(ao, "$(DEVICE):CURRENT_SP")
 {
     field(DESC, "UNIMAG Current Setpoint (signed)")
     field(EGU,  "A")
@@ -25,13 +25,13 @@ record(ao, "$(DEVICE):UNIMAG:CURRENT_SP")
 # UNIMAG Current Readback - Signed Based on Polarity  
 ################################################################################
 # Current readback (signed based on polarity)
-# PV format: $(DEVICE):UNIMAG:CURRENT_RB
-record(calcout, "$(DEVICE):UNIMAG:CURRENT_RB")
+# PV format: $(DEVICE):CURRENT_RB
+record(calcout, "$(DEVICE):CURRENT_RB")
 {
     field(DESC, "UNIMAG Current Readback (signed)")
     field(INPA, "$(DEVICE):I_RB CP")
-    field(INPB, "$(DEVICE):POL_RB CP") 
-    field(CALC, "(B=\"-\")?(-A):A")
+    field(INPB, "$(DEVICE):POL_NORMAL CP") 
+    field(CALC, "B?A:(-A)")
     field(EGU,  "A")
     field(PREC, "$(PREC=3)")
     field(SCAN, "1 second")
@@ -42,25 +42,24 @@ record(calcout, "$(DEVICE):UNIMAG:CURRENT_RB")
 ################################################################################
 
 # Overall state readback - decode state from individual status bits
-# PV format: $(DEVICE):UNIMAG:STATE_RB  
+# PV format: $(DEVICE):STATE_RB  
 # Values: 0=OFF, 1=STANDBY, 2=ON, 3=FAULT, 4=RAMPING, 5=POLARITY_CHANGE
-record(calcout, "$(DEVICE):UNIMAG:STATE_DECODE")
+record(calcout, "$(DEVICE):STATE_DECODE")
 {
     field(DESC, "Decode Power Supply State")
     field(INPA, "$(DEVICE):MAIN_PWR_ON CP")      # Main power status
-    field(INPB, "$(DEVICE):CTRL_MODE CP MS")     # Control mode
-    field(INPC, "$(DEVICE):STATUS CP MS")        # Status string  
-    field(INPD, "$(DEVICE):UNIMAG:POL_CHANGING") # Polarity changing flag
-    field(INPE, "$(DEVICE):UNIMAG:RAMPING")      # Ramping flag
-    field(CALC, "D?5:(E?4:((C[0]=33)||(C[10]=33)||(C[15]=33)||(C[19]=33)||(C[20]=33)||(C[22]=33))?3:(A?2:1))")
-    field(OUT,  "$(DEVICE):UNIMAG:STATE_RB PP")
+    field(INPB, "$(DEVICE):STATUS.SEVR CP")      # Status alarm severity (INVALID when fault)
+    field(INPC, "$(DEVICE):POL_CHANGING CP")     # Polarity changing flag
+    field(INPD, "$(DEVICE):RAMPING CP")          # Ramping flag
+    field(CALC, "C?5:(D?4:(B>0?3:(A?2:1)))")
+    field(OUT,  "$(DEVICE):STATE_RB PP")
     field(SCAN, "1 second")
 }
 
-record(mbbi, "$(DEVICE):UNIMAG:STATE_RB")
+record(mbbi, "$(DEVICE):STATE_RB")
 {
     field(DESC, "UNIMAG Power Supply State")
-    field(INP,  "$(DEVICE):UNIMAG:STATE_DECODE NPP MS")
+    field(INP,  "$(DEVICE):STATE_DECODE NPP MS")
     field(ZRST, "OFF")
     field(ONST, "STANDBY") 
     field(TWST, "ON")
@@ -82,9 +81,9 @@ record(mbbi, "$(DEVICE):UNIMAG:STATE_RB")
 }
 
 # State control setpoint
-# PV format: $(DEVICE):UNIMAG:STATE_SP
+# PV format: $(DEVICE):STATE_SP
 # Allows user to command state changes
-record(mbbo, "$(DEVICE):UNIMAG:STATE_SP")
+record(mbbo, "$(DEVICE):STATE_SP")
 {
     field(DESC, "Set UNIMAG Power Supply State")
     field(ZRST, "OFF")
@@ -95,15 +94,15 @@ record(mbbo, "$(DEVICE):UNIMAG:STATE_SP")
     field(ONVL, "1")
     field(TWVL, "2")
     field(THVL, "3")
-    field(FLNK, "$(DEVICE):UNIMAG:STATE_PROCESS")
+    field(FLNK, "$(DEVICE):STATE_PROCESS")
 }
 
 # Process state change requests
-record(seq, "$(DEVICE):UNIMAG:STATE_PROCESS")
+record(seq, "$(DEVICE):STATE_PROCESS")
 {
     field(DESC, "Process UNIMAG State Command")
     field(SELM, "Specified")
-    field(SELL, "$(DEVICE):UNIMAG:STATE_SP NPP MS")
+    field(SELL, "$(DEVICE):STATE_SP NPP MS")
     # Link 0: OFF command → power off
     field(DOL0, "0")
     field(LNK0, "$(DEVICE):POWER_SP PP")
@@ -123,7 +122,7 @@ record(seq, "$(DEVICE):UNIMAG:STATE_PROCESS")
 ################################################################################
 
 # Flag indicating polarity is being changed
-record(bo, "$(DEVICE):UNIMAG:POL_CHANGING")
+record(bo, "$(DEVICE):POL_CHANGING")
 {
     field(DESC, "Polarity Change in Progress")
     field(ZNAM, "No")
@@ -132,7 +131,7 @@ record(bo, "$(DEVICE):UNIMAG:POL_CHANGING")
 }
 
 # Flag indicating ramping is in progress  
-record(bo, "$(DEVICE):UNIMAG:RAMPING")
+record(bo, "$(DEVICE):RAMPING")
 {
     field(DESC, "Ramping in Progress")
     field(ZNAM, "No")
@@ -141,7 +140,7 @@ record(bo, "$(DEVICE):UNIMAG:RAMPING")
 }
 
 # Target polarity for SNL program (1=positive, 0=negative)
-record(bo, "$(DEVICE):UNIMAG:TARGET_POL")
+record(bo, "$(DEVICE):TARGET_POL")
 {
     field(DESC, "Target Polarity")
     field(ZNAM, "Negative")
@@ -150,7 +149,7 @@ record(bo, "$(DEVICE):UNIMAG:TARGET_POL")
 }
 
 # Absolute target current for SNL program
-record(ao, "$(DEVICE):UNIMAG:TARGET_ABS_CURR")
+record(ao, "$(DEVICE):TARGET_ABS_CURR")
 {
     field(DESC, "Target Absolute Current")
     field(EGU,  "A")
@@ -159,7 +158,7 @@ record(ao, "$(DEVICE):UNIMAG:TARGET_ABS_CURR")
 }
 
 # Command to start the sequence (written by SNL program)
-record(bo, "$(DEVICE):UNIMAG:START_SEQ")
+record(bo, "$(DEVICE):START_SEQ")
 {
     field(DESC, "Start UNIMAG Sequence")
     field(ZNAM, "Idle")
@@ -168,7 +167,7 @@ record(bo, "$(DEVICE):UNIMAG:START_SEQ")
 }
 
 # Sequence step indicator for diagnostics
-record(mbbo, "$(DEVICE):UNIMAG:SEQ_STEP")
+record(mbbo, "$(DEVICE):SEQ_STEP")
 {
     field(DESC, "Current Sequence Step")
     field(ZRST, "IDLE")
@@ -188,46 +187,39 @@ record(mbbo, "$(DEVICE):UNIMAG:SEQ_STEP")
 ################################################################################
 
 # Interlock status summary
-record(calc, "$(DEVICE):UNIMAG:INTERLOCKED")
+record(calc, "$(DEVICE):INTERLOCKED")
 {
     field(DESC, "Interlock Active")
-    field(INPA, "$(DEVICE):STATUS CP MS")
-    field(CALC, "(A[0]=33)||(A[10]=33)||(A[15]=33)||(A[19]=33)||(A[20]=33)||(A[22]=33)")
-    field(ZNAM, "No Interlock")
-    field(ONAM, "Interlocked")
+    field(INPA, "$(DEVICE):STATUS.SEVR CP")
+    field(CALC, "A>0")
 }
 
 # Ready for operation
-record(calc, "$(DEVICE):UNIMAG:READY")  
+record(calc, "$(DEVICE):READY")  
 {
     field(DESC, "Ready for Operation")
-    field(INPA, "$(DEVICE):UNIMAG:INTERLOCKED CP")
+    field(INPA, "$(DEVICE):INTERLOCKED CP")
     field(INPB, "$(DEVICE):CONNECTED CP")
-    field(INPC, "$(DEVICE):CTRL_MODE CP MS")
-    field(CALC, "!A&&B&&(C=\"REM\")")
-    field(ZNAM, "Not Ready")
-    field(ONAM, "Ready")
+    field(CALC, "!A&&B")
 }
 
 # Current difference (setpoint vs readback)
-record(calc, "$(DEVICE):UNIMAG:CURR_DIFF")
+record(calc, "$(DEVICE):CURR_DIFF")
 {
     field(DESC, "Current Difference")
-    field(INPA, "$(DEVICE):UNIMAG:CURRENT_SP CP")
-    field(INPB, "$(DEVICE):UNIMAG:CURRENT_RB CP")
+    field(INPA, "$(DEVICE):CURRENT_SP CP")
+    field(INPB, "$(DEVICE):CURRENT_RB CP")
     field(CALC, "ABS(A-B)")
     field(EGU,  "A")
     field(PREC, "$(PREC=3)")
 }
 
 # At setpoint indicator (within tolerance)
-record(calc, "$(DEVICE):UNIMAG:AT_SETPOINT")
+record(calc, "$(DEVICE):AT_SETPOINT")
 {
     field(DESC, "At Setpoint")  
-    field(INPA, "$(DEVICE):UNIMAG:CURR_DIFF CP")
+    field(INPA, "$(DEVICE):CURR_DIFF CP")
     field(CALC, "A<$(TOLERANCE=1.0)")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
 }
 
 ################################################################################
@@ -235,23 +227,21 @@ record(calc, "$(DEVICE):UNIMAG:AT_SETPOINT")
 ################################################################################
 
 # Current polarity as binary (1=positive, 0=negative)
-record(calc, "$(DEVICE):UNIMAG:CURR_POL_BIN")
+record(calc, "$(DEVICE):CURR_POL_BIN")
 {
     field(DESC, "Current Polarity Binary")
-    field(INPA, "$(DEVICE):POL_RB CP MS")
-    field(CALC, "(A=\"+\")?1:0")
+    field(INPA, "$(DEVICE):POL_NORMAL CP")
+    field(CALC, "A")
     field(SCAN, "1 second")
 }
 
 # Polarity change needed
-record(calc, "$(DEVICE):UNIMAG:POL_CHG_NEEDED")
+record(calc, "$(DEVICE):POL_CHG_NEEDED")
 {
     field(DESC, "Polarity Change Needed")
-    field(INPA, "$(DEVICE):UNIMAG:TARGET_POL CP")
-    field(INPB, "$(DEVICE):UNIMAG:CURR_POL_BIN CP")  
-    field(CALC, "A!=B")
-    field(ZNAM, "No")
-    field(ONAM, "Yes")
+    field(INPA, "$(DEVICE):TARGET_POL CP")
+    field(INPB, "$(DEVICE):CURR_POL_BIN CP")  
+    field(CALC, "!(A=B)")
 }
 
 ################################################################################
@@ -259,32 +249,32 @@ record(calc, "$(DEVICE):UNIMAG:POL_CHG_NEEDED")
 ################################################################################
 
 # Operation counter
-record(calc, "$(DEVICE):UNIMAG:OP_COUNT")
+record(calc, "$(DEVICE):OP_COUNT")
 {
     field(DESC, "Operation Counter")
-    field(INPA, "$(DEVICE):UNIMAG:OP_COUNT")
+    field(INPA, "$(DEVICE):OP_COUNT")
     field(CALC, "A+1")
     field(VAL,  "0")
 }
 
 # Last operation timestamp  
-record(stringout, "$(DEVICE):UNIMAG:LAST_OP")
+record(stringout, "$(DEVICE):LAST_OP")
 {
     field(DESC, "Last Operation Time")
     field(VAL,  "Never")
 }
 
 # Error counter
-record(calc, "$(DEVICE):UNIMAG:ERROR_COUNT")
+record(calc, "$(DEVICE):ERROR_COUNT")
 {
     field(DESC, "Error Counter")
-    field(INPA, "$(DEVICE):UNIMAG:ERROR_COUNT")
+    field(INPA, "$(DEVICE):ERROR_COUNT")
     field(CALC, "A+1")
     field(VAL,  "0")
 }
 
 # Last error message
-record(stringout, "$(DEVICE):UNIMAG:LAST_ERROR")
+record(stringout, "$(DEVICE):LAST_ERROR")
 {
     field(DESC, "Last Error Message")
     field(VAL,  "None")
@@ -295,7 +285,7 @@ record(stringout, "$(DEVICE):UNIMAG:LAST_ERROR")
 ################################################################################
 
 # Enable/disable automatic operation
-record(bo, "$(DEVICE):UNIMAG:AUTO_ENABLE")
+record(bo, "$(DEVICE):AUTO_ENABLE")
 {
     field(DESC, "Enable Automatic Operation")
     field(ZNAM, "Disabled")
@@ -305,7 +295,7 @@ record(bo, "$(DEVICE):UNIMAG:AUTO_ENABLE")
 }
 
 # Manual polarity control (bypasses automatic)
-record(bo, "$(DEVICE):UNIMAG:MANUAL_POL")
+record(bo, "$(DEVICE):MANUAL_POL")
 {
     field(DESC, "Manual Polarity Control")
     field(ZNAM, "Auto")
@@ -314,7 +304,7 @@ record(bo, "$(DEVICE):UNIMAG:MANUAL_POL")
 }
 
 # Sequence timeout setting (seconds)
-record(ao, "$(DEVICE):UNIMAG:TIMEOUT")
+record(ao, "$(DEVICE):TIMEOUT")
 {
     field(DESC, "Sequence Timeout")
     field(EGU,  "s")
@@ -325,7 +315,7 @@ record(ao, "$(DEVICE):UNIMAG:TIMEOUT")
 }
 
 # Debug level
-record(mbbo, "$(DEVICE):UNIMAG:DEBUG")
+record(mbbo, "$(DEVICE):DEBUG")
 {
     field(DESC, "Debug Level")
     field(ZRST, "OFF")
@@ -340,7 +330,6 @@ record(mbbo, "$(DEVICE):UNIMAG:DEBUG")
 # Compatibility Aliases
 ################################################################################
 
-# Aliases for compatibility with existing systems
-alias("$(DEVICE):UNIMAG:CURRENT_SP", "$(DEVICE):UNIMAG:I_SP")
-alias("$(DEVICE):UNIMAG:CURRENT_RB", "$(DEVICE):UNIMAG:I_RB")
-alias("$(DEVICE):UNIMAG:STATE_RB", "$(DEVICE):UNIMAG:STATUS")
+# Note: CURRENT_SP, CURRENT_RB, and STATE_RB are actual records in this template
+# They reference the raw I_SP, I_RB, and STATUS records from danfysik.template
+# No aliases needed since both sets of records exist independently

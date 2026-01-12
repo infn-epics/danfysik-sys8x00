@@ -21,8 +21,7 @@ EPICS_BASE=/epics/epics-base
 SUPPORT=/epics/support
 STREAMDEVICE=$(SUPPORT)/StreamDevice
 ASYN=$(SUPPORT)/asyn
-
-#SNCSEQ=$(SUPPORT)/sequencer
+SNCSEQ=$(SUPPORT)/sequencer
 
 #Capfast users may need the following definitions
 #CAPFAST_TEMPLATES=

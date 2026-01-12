@@ -79,7 +79,7 @@
         <action type="open_display">
           <file>danfysik_ps.bob</file>
           <macros>
-            <DEVICE>PS:DANFYSIK:01</DEVICE>
+            <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
             <IMAX>100</IMAX>
             <VMAX>50</VMAX>
           </macros>
@@ -134,7 +134,7 @@
         <action type="open_display">
           <file>danfysik_ps_unimag.bob</file>
           <macros>
-            <DEVICE>PS:DANFYSIK:01</DEVICE>
+            <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
             <IMAX>100</IMAX>
           </macros>
           <target>window</target>
@@ -188,7 +188,7 @@
         <action type="open_display">
           <file>danfysik_ps_expert.bob</file>
           <macros>
-            <DEVICE>PS:DANFYSIK:01</DEVICE>
+            <DEVICE>BTF:MAG:DANFYSIK:QUATM002</DEVICE>
             <IMAX>100</IMAX>
           </macros>
           <target>window</target>
@@ -221,7 +221,7 @@
     <widget type="label" version="2.0.0">
       <name>ConfigText</name>
       <text>• Modify macro values above for your specific setup
-• DEVICE: PV prefix (e.g., PS:DANFYSIK:01)
+• DEVICE: PV prefix (e.g., BTF:MAG:DANFYSIK:QUATM002)
 • IMAX: Maximum current in Amperes
 • VMAX: Maximum voltage in Volts
 • Ensure IOC is running before opening panels</text>
