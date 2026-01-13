@@ -14,13 +14,8 @@ LIBRARY_IOC += danfysikSupport
 DBD += danfysikSupport.dbd
 
 # danfysikSupport.dbd will be made up from these files:
-danfysikSupport_DBD += base.dbd
-danfysikSupport_DBD += stream.dbd ## streamdevice.dbd
-danfysikSupport_DBD += asyn.dbd 
-danfysikSupport_DBD += drvAsynIPPort.dbd
-danfysikSupport_DBD += drvAsynSerialPort.dbd
+danfysikSupport_DBD += danfysikUnimagControl.dbd
 
-# Install support dbd into <top>/dbd
 # Include dbd for SNL program registrar
 # SNL program source (built into support library)
 danfysikSupport_SRCS += danfysikUnimagControl.st
